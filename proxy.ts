@@ -8,7 +8,7 @@ export async function proxy(request: NextRequest) {
   });
 
   if (!session) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   return NextResponse.next();
@@ -16,11 +16,17 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/dashboard",
     "/dashboard/:path*",
+    "/transactions",
     "/transactions/:path*",
+    "/accounts",
     "/accounts/:path*",
+    "/budgets",
     "/budgets/:path*",
+    "/goals",
     "/goals/:path*",
+    "/categories",
     "/categories/:path*",
-  ], // Specify the routes the middleware applies to
+  ],
 };

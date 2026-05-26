@@ -1,0 +1,2 @@
+- [Auth Security Audit (Phase 3 & 4)](project_auth_security.md) — Findings from auditing proxy.ts, layouts, authActions.ts, auth.ts; rate limiting gap; error leakage
+- [Auth Conventions](project_auth_conventions.md) — How sessions are retrieved, route protection layers, nextCookies() pattern, no-API-routes rule

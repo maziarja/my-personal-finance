@@ -27,7 +27,7 @@ export const signIn = async (formData: SignInType) => {
   } catch (error) {
     console.error(error);
     if (isAPIError(error)) {
-      return { error: error.message };
+      return { error: "Invalid email or password." };
     }
     return { error: "Something went wrong. Please try again." };
   }
@@ -62,4 +62,5 @@ export async function signOut() {
   await auth.api.signOut({
     headers: await headers(),
   });
+  redirect("/");
 }
