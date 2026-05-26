@@ -25,3 +25,7 @@ This is a learning project. The user is building it to learn Zustand and TanStac
 
 5. **Always use Context7 MCP for core features.** Before implementing any core feature, use the `context7` MCP server to fetch up-to-date documentation for the relevant library. Never rely solely on training data — APIs and conventions change.
 
+6. **Pages are always Server Components.** Never add `"use client"` to a `page.tsx` file. If a page needs client-side behaviour, extract that into a separate component and import it into the page.
+
+7. **Prefer Server Components by default.** Only create a Client Component (`"use client"`) when it genuinely requires browser APIs, event handlers, or React hooks. If a component only renders JSX or receives server data as props, keep it as a Server Component.
+
