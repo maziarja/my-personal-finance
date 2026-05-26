@@ -17,6 +17,7 @@ Get the full stack installed and wired together before writing any features.
 - [ ] `[Logic]` Initialize Prisma (`npx prisma init`) and configure Neon connection
 - [ ] `[Logic]` Configure TanStack Query provider in `app/layout.tsx`
 - [ ] `[Logic]` Configure Better Auth (`lib/auth.ts`) — email + password, attach Prisma adapter
+- [ ] `[Logic]` Create `proxy.ts` — Next.js 16 route protection (replaces `middleware.ts`)
 
 ---
 
@@ -42,12 +43,17 @@ Define all models before building any features.
 - [ ] `[Logic]` Wire sign-in form to Better Auth `signIn.email()`
 - [ ] `[Logic]` Wire sign-up form to Better Auth `signUp.email()`
 - [ ] `[Logic]` Handle redirect after login → dashboard
-- [ ] `[Logic]` Protect routes by checking auth session inside each `page.tsx` — redirect unauthenticated users to sign-in
+- [ ] `[Logic]` Protect routes — `proxy.ts` guards routes at the edge; auth/dashboard layouts handle redirects for already-authenticated and unauthenticated users respectively
 
 ---
 
-## Phase 4 — App Shell & Navigation
+## Phase 4 — Landing Page & App Shell
 
+### Landing Page (`/`)
+- [ ] `[UI]` Build landing page (`app/page.tsx`) — hero section, app description, CTA buttons to sign-in and sign-up
+- [ ] `[Logic]` Session check already in place — authenticated users are redirected to `/dashboard`
+
+### App Shell & Navigation
 - [ ] `[UI]` Build sidebar with nav links: Dashboard, Transactions, Accounts, Budgets, Goals, Categories
 - [ ] `[UI]` Build top header bar (page title, user avatar/menu, sign out button)
 - [ ] `[UI]` Build authenticated app layout (`app/(app)/layout.tsx`) wrapping sidebar + header

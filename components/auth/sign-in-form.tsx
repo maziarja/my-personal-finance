@@ -13,9 +13,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signInSchema, SignInType } from "@/lib/schemas/authSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "@/app/_actions/authActions";
+import { Spinner } from "../ui/spinner";
 
 export function SignInForm() {
-  const form = useForm();
+  const form = useForm<SignInType>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(formData: SignInType) {
+    const result = await signIn(formData);
+    if (result?.error) form.setError("root", { message: result.error });
+  }
 
   return (
     <Card className="w-full max-w-sm">
@@ -25,13 +40,19 @@ export function SignInForm() {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
           <Controller
             control={form.control}
             name="email"
             render={({ field, fieldState }) => (
-              <Field.Root invalid={!!fieldState.error} className="flex flex-col gap-1.5">
-                <Field.Label className="text-sm font-medium text-foreground">
+              <Field.Root
+                invalid={!!fieldState.error}
+                className="flex flex-col gap-1.5"
+              >
+                <Field.Label className="text-foreground text-sm font-medium">
                   Email
                 </Field.Label>
                 <Input
@@ -40,9 +61,11 @@ export function SignInForm() {
                   autoComplete="email"
                   {...field}
                 />
-                <Field.Error className="text-sm text-destructive">
-                  {fieldState.error?.message}
-                </Field.Error>
+                {fieldState.error && (
+                  <p className="text-destructive text-sm">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </Field.Root>
             )}
           />
@@ -51,8 +74,11 @@ export function SignInForm() {
             control={form.control}
             name="password"
             render={({ field, fieldState }) => (
-              <Field.Root invalid={!!fieldState.error} className="flex flex-col gap-1.5">
-                <Field.Label className="text-sm font-medium text-foreground">
+              <Field.Root
+                invalid={!!fieldState.error}
+                className="flex flex-col gap-1.5"
+              >
+                <Field.Label className="text-foreground text-sm font-medium">
                   Password
                 </Field.Label>
                 <Input
@@ -61,20 +87,26 @@ export function SignInForm() {
                   autoComplete="current-password"
                   {...field}
                 />
-                <Field.Error className="text-sm text-destructive">
-                  {fieldState.error?.message}
-                </Field.Error>
+                {fieldState.error && (
+                  <p className="text-destructive text-sm">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </Field.Root>
             )}
           />
-
+          {form.formState.errors.root && (
+            <p className="text-destructive text-sm">
+              {form.formState.errors.root.message}
+            </p>
+          )}
           <Button type="submit" className="mt-2 w-full">
-            Sign in
+            {form.formState.isSubmitting ? <Spinner /> : "Sign in"}
           </Button>
         </form>
       </CardContent>
 
-      <CardFooter className="justify-center text-sm text-muted-foreground">
+      <CardFooter className="text-muted-foreground justify-center text-sm">
         Don&apos;t have an account?&nbsp;
         <Link
           href="/sign-up"
