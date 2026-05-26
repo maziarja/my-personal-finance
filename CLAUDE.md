@@ -29,3 +29,5 @@ This is a learning project. The user is building it to learn Zustand and TanStac
 
 7. **Prefer Server Components by default.** Only create a Client Component (`"use client"`) when it genuinely requires browser APIs, event handlers, or React hooks. If a component only renders JSX or receives server data as props, keep it as a Server Component.
 
+8. **Small components, thin pages.** Never build sections or feature blocks inline inside `page.tsx`. Always extract each piece into its own file under `components/<feature>/` (e.g. `components/landing/navbar.tsx`), then import and compose them in the page. Pages should be short files that only import, compose, and handle server-side concerns.
+
