@@ -26,7 +26,7 @@ Define all models before building any features.
 
 - [ ] `[Logic]` Write Prisma model: `User` (managed by Better Auth)
 - [ ] `[Logic]` Write Prisma model: `FinancialAccount` (name, type, balance, userId) — named `FinancialAccount` to avoid collision with Better Auth's `Account` model
-- [ ] `[Logic]` Write Prisma model: `Category` (name, color, icon, userId)
+- [ ] `[Logic]` Write Prisma model: `Category` (name, color, userId)
 - [ ] `[Logic]` Write Prisma model: `Transaction` (amount, type, date, notes, accountId, categoryId, userId)
 - [ ] `[Logic]` Write Prisma model: `Budget` (categoryId, monthlyLimit, month, userId)
 - [ ] `[Logic]` Write Prisma model: `Goal` (name, targetAmount, currentAmount, deadline, userId)

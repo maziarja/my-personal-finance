@@ -14,7 +14,7 @@ A multi-user personal finance tracker. Each user has fully isolated data. Authen
 ### Transactions
 - Log income or expense
 - Fields: amount, type (income/expense), category, account, date, optional notes
-- Categories are user-created (not predefined)
+- Categories are user-created (not predefined), each has a name and color
 
 ### Budgets
 - Set a monthly spending limit per category
