@@ -5,10 +5,11 @@ A multi-user personal finance tracker. Each user has fully isolated data. Authen
 
 ## Core Entities
 
-### Accounts
+### Financial Accounts (`FinancialAccount`)
 - Create/edit/delete accounts (e.g. bank, cash, credit card)
 - Each account has a name, type, and current balance
-- Transactions are always linked to an account
+- Transactions are always linked to a financial account
+- Named `FinancialAccount` in Prisma to avoid collision with Better Auth's `Account` model
 
 ### Transactions
 - Log income or expense
