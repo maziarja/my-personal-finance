@@ -8,6 +8,7 @@ import {
   SignUpType,
 } from "@/lib/schemas/authSchema";
 import { isAPIError } from "better-auth/api";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const signIn = async (formData: SignInType) => {
@@ -56,3 +57,9 @@ export const signUp = async (formData: SignUpType) => {
   }
   redirect("/dashboard");
 };
+
+export async function signOut() {
+  await auth.api.signOut({
+    headers: await headers(),
+  });
+}
