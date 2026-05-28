@@ -96,6 +96,7 @@ model FinancialAccount {
   balance      Decimal
   transactions Transaction[]
 
+  @@unique([ownerId, name, type])
   @@index([ownerId])
 }
 

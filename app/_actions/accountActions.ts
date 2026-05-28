@@ -9,6 +9,7 @@ import {
   UpdatedAccountFormType,
 } from "@/lib/schemas/accountSchema";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "../generated/prisma/client";
 
 export async function getAccounts() {
   const session = await getSession();
@@ -49,6 +50,13 @@ export async function createAccount(formData: AccountFormType) {
     });
   } catch (error) {
     console.error(error);
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { error: "You already have this account" };
+    }
+
     return { error: "Unable to create account" };
   }
 
