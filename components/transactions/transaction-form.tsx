@@ -16,8 +16,15 @@ import {
   type TransactionFormType,
 } from "@/lib/schemas/transactionSchema";
 
-export type AccountOption = { id: string; name: string };
+export type AccountOption = { id: string; name: string; type: string };
 export type CategoryOption = { id: string; name: string; color: string };
+
+const ACCOUNT_TYPE_LABELS: Record<string, string> = {
+  CHECKING: "Checking",
+  SAVING: "Saving",
+  CREDIT_CARD: "Credit Card",
+  CASH: "Cash",
+};
 
 const TRANSACTION_TYPES = [
   { value: "INCOME", label: "Income" },
@@ -190,15 +197,30 @@ export function TransactionForm({
                     !field.value && "text-muted-foreground",
                   )}
                 >
-                  {field.value
-                    ? accounts.find((a) => a.id === field.value)?.name
-                    : "Select account"}
+                  {field.value ? (
+                    (() => {
+                      const a = accounts.find((acc) => acc.id === field.value);
+                      return a ? (
+                        <>
+                          {a.name}
+                          <span className="text-muted-foreground ml-1">
+                            · {ACCOUNT_TYPE_LABELS[a.type] ?? a.type}
+                          </span>
+                        </>
+                      ) : null;
+                    })()
+                  ) : (
+                    "Select account"
+                  )}
                 </span>
               </SelectTrigger>
               <SelectContent>
                 {accounts.map((account) => (
                   <SelectItem key={account.id} value={account.id}>
                     {account.name}
+                    <span className="text-muted-foreground ml-1">
+                      · {ACCOUNT_TYPE_LABELS[account.type] ?? account.type}
+                    </span>
                   </SelectItem>
                 ))}
               </SelectContent>
