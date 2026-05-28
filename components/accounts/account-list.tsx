@@ -1,32 +1,28 @@
 "use client";
 
-import { Wallet } from "lucide-react";
 import { AccountCard } from "@/components/accounts/account-card";
+import { AccountsEmpty } from "@/components/accounts/accounts-empty";
+import { AccountsError } from "@/components/accounts/accounts-error";
 import { CreateAccountDialog } from "@/components/accounts/create-account-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/app/_actions/accountActions";
 
 export function AccountList() {
-  const { data: accounts } = useQuery({
+  const {
+    data: accounts,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["accounts"],
     queryFn: getAccounts,
   });
-  console.log(accounts);
+
+  if (isError || (accounts && "error" in accounts)) {
+    return <AccountsError onRetry={refetch} />;
+  }
+
   if (accounts?.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed py-16 text-center">
-        <div className="bg-muted flex size-12 items-center justify-center rounded-full">
-          <Wallet className="text-muted-foreground size-6" />
-        </div>
-        <div>
-          <p className="font-medium">No accounts yet</p>
-          <p className="text-muted-foreground text-sm">
-            Add your first account to start tracking your finances.
-          </p>
-        </div>
-        <CreateAccountDialog />
-      </div>
-    );
+    return <AccountsEmpty />;
   }
 
   return (
@@ -34,7 +30,7 @@ export function AccountList() {
       <div className="flex justify-end">
         <CreateAccountDialog />
       </div>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {accounts?.map((account) => (
           <AccountCard key={account.id} account={account} />
         ))}

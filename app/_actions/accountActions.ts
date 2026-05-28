@@ -20,7 +20,6 @@ export async function getAccounts() {
       where: { ownerId: session.user.id },
       orderBy: { name: "asc" },
     });
-
     return accounts.map((acc) => ({
       ...acc,
       balance: acc.balance.toNumber(),
