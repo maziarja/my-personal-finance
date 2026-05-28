@@ -66,15 +66,15 @@ const formatCurrency = (amount: number) =>
 
 type AccountCardProps = {
   account: Account;
+  className?: string;
 };
 
-export function AccountCard({ account }: AccountCardProps) {
+export function AccountCard({ account, className }: AccountCardProps) {
   const config = TYPE_CONFIG[account.type];
   const Icon = config.icon;
 
   return (
-    <Card className="flex min-h-[160px] flex-col gap-0 p-0">
-      {/* Top: name (capitalized) + actions */}
+    <Card className={cn("flex min-h-40 flex-col gap-0 p-0", className)}>
       <div className="flex items-start justify-between px-6 pt-6">
         <p className="text-xl font-semibold capitalize">{account.name}</p>
         <div className="flex items-center gap-1">
@@ -86,7 +86,6 @@ export function AccountCard({ account }: AccountCardProps) {
         </div>
       </div>
 
-      {/* Bottom: balance left, type right */}
       <div className="mt-auto flex items-end justify-between px-6 pb-6">
         <p
           className={cn(

@@ -4,6 +4,7 @@ import { AccountCard } from "@/components/accounts/account-card";
 import { AccountsEmpty } from "@/components/accounts/accounts-empty";
 import { AccountsError } from "@/components/accounts/accounts-error";
 import { CreateAccountDialog } from "@/components/accounts/create-account-dialog";
+import { getCardSpan } from "@/lib/helpers/get-card-span";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/app/_actions/accountActions";
 
@@ -30,9 +31,13 @@ export function AccountList() {
       <div className="flex justify-end">
         <CreateAccountDialog />
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        {accounts?.map((account) => (
-          <AccountCard key={account.id} account={account} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {accounts?.map((account, index) => (
+          <AccountCard
+            key={account.id}
+            account={account}
+            className={getCardSpan(index, accounts.length)}
+          />
         ))}
       </div>
     </div>
