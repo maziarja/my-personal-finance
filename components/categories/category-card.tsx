@@ -20,18 +20,18 @@ export function CategoryCard({ category, className }: CategoryCardProps) {
     <Card
       className={className}
       style={{
-        boxShadow: `0 0 0 1px ${category.color}33, 0 4px 24px -4px ${category.color}1a`,
+        boxShadow: `0 0 0 0.5px ${category.color}33, 0 4px 24px -4px ${category.color}1a`,
       }}
     >
       <div className="flex items-center justify-between p-5">
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex min-w-0 items-center gap-3">
           <div
             className="size-4 shrink-0 rounded-full"
             style={{ backgroundColor: category.color }}
           />
-          <p className="font-medium truncate">{category.name}</p>
+          <p className="truncate font-medium">{category.name}</p>
         </div>
-        <div className="flex items-center gap-1 shrink-0 ml-2">
+        <div className="ml-2 flex shrink-0 items-center gap-1">
           <EditCategoryDialog category={category} />
           <DeleteCategoryDialog
             categoryId={category.id}
