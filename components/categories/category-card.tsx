@@ -17,7 +17,12 @@ type CategoryCardProps = {
 
 export function CategoryCard({ category, className }: CategoryCardProps) {
   return (
-    <Card className={className}>
+    <Card
+      className={className}
+      style={{
+        boxShadow: `0 0 0 1px ${category.color}33, 0 4px 24px -4px ${category.color}1a`,
+      }}
+    >
       <div className="flex items-center justify-between p-5">
         <div className="flex items-center gap-3 min-w-0">
           <div
