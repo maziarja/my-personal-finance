@@ -1,26 +1,27 @@
 "use client";
 
-import { CategoryCard, type Category } from "@/components/categories/category-card";
+import { CategoryCard } from "@/components/categories/category-card";
 import { CategoriesEmpty } from "@/components/categories/categories-empty";
 import { CategoriesError } from "@/components/categories/categories-error";
 import { CreateCategoryDialog } from "@/components/categories/create-category-dialog";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "@/app/_actions/categoryActions";
 
-interface CategoryListProps {
-  categories: Category[];
-  isError?: boolean;
-  onRetry?: () => void;
-}
+export function CategoryList() {
+  const {
+    data: categories,
+    isError,
+    refetch: onRetry,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
 
-export function CategoryList({
-  categories,
-  isError,
-  onRetry,
-}: CategoryListProps) {
-  if (isError) {
+  if ((categories && "error" in categories) || isError) {
     return <CategoriesError onRetry={onRetry ?? (() => {})} />;
   }
 
-  if (categories.length === 0) {
+  if (categories?.length === 0) {
     return <CategoriesEmpty />;
   }
 
@@ -30,7 +31,7 @@ export function CategoryList({
         <CreateCategoryDialog />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <CategoryCard key={category.id} category={category} />
         ))}
       </div>

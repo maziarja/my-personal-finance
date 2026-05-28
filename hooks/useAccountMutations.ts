@@ -39,7 +39,7 @@ export function useAccountMutations() {
     },
 
     // Role back on error
-    onError: (err, newAccount, onMutateResult, context) => {
+    onError: (err, _newAccount, onMutateResult, context) => {
       context.client.setQueryData(
         ["accounts"],
         onMutateResult?.previousAccounts,
@@ -48,7 +48,10 @@ export function useAccountMutations() {
     },
 
     // Updated data on success
-    onSettled: (data, error, variable, onMutateResult, context) => {
+    onSettled: (data, _error, _variable, _onMutateResult, context) => {
+      if (data && "error" in data) {
+        toast.error(data.error);
+      }
       return context.client.invalidateQueries({ queryKey: ["accounts"] });
     },
   });
@@ -84,7 +87,7 @@ export function useAccountMutations() {
     },
 
     // Role back on error
-    onError: (err, updatedAccount, onMutateResult, context) => {
+    onError: (err, _updatedAccount, onMutateResult, context) => {
       context.client.setQueryData(
         ["accounts"],
         onMutateResult?.previousAccounts,
@@ -92,7 +95,10 @@ export function useAccountMutations() {
       toast.error(err.message);
     },
 
-    onSettled: (data, error, updatedAccount, onMutateResult, context) => {
+    onSettled: (data, _error, _updatedAccount, _onMutateResult, context) => {
+      if (data && "error" in data) {
+        toast.error(data.error);
+      }
       return context.client.invalidateQueries({ queryKey: ["accounts"] });
     },
   });
@@ -115,7 +121,7 @@ export function useAccountMutations() {
     },
 
     // Role back on error
-    onError: (err, accountId, onMutateResult, context) => {
+    onError: (err, _accountId, onMutateResult, context) => {
       context.client.setQueryData(
         ["accounts"],
         onMutateResult?.previousAccounts,
@@ -124,8 +130,11 @@ export function useAccountMutations() {
     },
 
     // Updated data on success
-    onSettled: (data, error, accountId, onMutateResult, context) => {
-      context.client.invalidateQueries({ queryKey: ["accounts"] });
+    onSettled: (data, _error, _accountId, _onMutateResult, context) => {
+      if (data && "error" in data) {
+        toast.error(data.error);
+      }
+      return context.client.invalidateQueries({ queryKey: ["accounts"] });
     },
   });
 

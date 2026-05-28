@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useCategoryMutations } from "@/hooks/useCategoryMutations";
 
 interface DeleteCategoryDialogProps {
   categoryId: string;
@@ -18,13 +19,14 @@ interface DeleteCategoryDialogProps {
 }
 
 export function DeleteCategoryDialog({
-  categoryId: _categoryId,
+  categoryId: categoryId,
   categoryName,
 }: DeleteCategoryDialogProps) {
   const [open, setOpen] = useState(false);
-
+  const { remove } = useCategoryMutations();
   function handleDelete() {
     setOpen(false);
+    remove(categoryId);
   }
 
   return (

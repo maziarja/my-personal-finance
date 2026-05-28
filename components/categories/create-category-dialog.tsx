@@ -13,14 +13,18 @@ import {
 } from "@/components/ui/dialog";
 import { CategoryForm } from "@/components/categories/category-form";
 import { type CategoryFormType } from "@/lib/schemas/categorySchema";
+import { useCategoryMutations } from "@/hooks/useCategoryMutations";
 
 export function CreateCategoryDialog() {
   const [open, setOpen] = useState(false);
 
+  const { create } = useCategoryMutations();
+
   async function handleSubmit(
-    _data: CategoryFormType,
+    data: CategoryFormType,
   ): Promise<void | { error: string }> {
     setOpen(false);
+    create(data);
   }
 
   return (

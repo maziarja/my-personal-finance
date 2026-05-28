@@ -35,7 +35,11 @@ interface CategoryFormProps {
   onSubmit: (data: CategoryFormType) => Promise<void | { error: string }>;
 }
 
-export function CategoryForm({ id, defaultValues, onSubmit }: CategoryFormProps) {
+export function CategoryForm({
+  id,
+  defaultValues,
+  onSubmit,
+}: CategoryFormProps) {
   const form = useForm<CategoryFormType>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -82,11 +86,14 @@ export function CategoryForm({ id, defaultValues, onSubmit }: CategoryFormProps)
         control={form.control}
         name="color"
         render={({ field, fieldState }) => (
-          <Field.Root
-            invalid={!!fieldState.error}
+          <div
+            role="group"
+            aria-labelledby="color-label"
             className="flex flex-col gap-1.5"
           >
-            <Field.Label className="text-sm font-medium">Color</Field.Label>
+            <span id="color-label" className="text-sm font-medium">
+              Color
+            </span>
             <div className="flex flex-wrap gap-2">
               {CATEGORY_COLORS.map((color) => (
                 <button
@@ -94,13 +101,14 @@ export function CategoryForm({ id, defaultValues, onSubmit }: CategoryFormProps)
                   type="button"
                   onClick={() => field.onChange(color)}
                   className={cn(
-                    "size-7 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                    "size-7 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                     field.value === color
-                      ? "ring-2 ring-offset-2 ring-foreground scale-110"
+                      ? "ring-foreground scale-110 ring-2 ring-offset-2"
                       : "hover:scale-105",
                   )}
                   style={{ backgroundColor: color }}
                   aria-label={color}
+                  aria-pressed={field.value === color}
                 />
               ))}
             </div>
@@ -109,7 +117,7 @@ export function CategoryForm({ id, defaultValues, onSubmit }: CategoryFormProps)
                 {fieldState.error.message}
               </p>
             )}
-          </Field.Root>
+          </div>
         )}
       />
 

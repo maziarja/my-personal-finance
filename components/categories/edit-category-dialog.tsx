@@ -14,6 +14,7 @@ import {
 import { CategoryForm } from "@/components/categories/category-form";
 import { type CategoryFormType } from "@/lib/schemas/categorySchema";
 import { type Category } from "@/components/categories/category-card";
+import { useCategoryMutations } from "@/hooks/useCategoryMutations";
 
 type EditCategoryDialogProps = {
   category: Category;
@@ -21,13 +22,15 @@ type EditCategoryDialogProps = {
 
 export function EditCategoryDialog({ category }: EditCategoryDialogProps) {
   const [open, setOpen] = useState(false);
-
+  const { update } = useCategoryMutations();
+  const id = category.id;
   async function handleSubmit(
-    _data: CategoryFormType,
+    data: CategoryFormType,
   ): Promise<void | { error: string }> {
     setOpen(false);
+    const updatedCategory = { ...data, id };
+    update(updatedCategory);
   }
-
   return (
     <>
       <Button
