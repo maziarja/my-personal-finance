@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { QueryProviders } from "@/lib/QueryProviders";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import Providers from "@/lib/providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <QueryProviders>
-          <TooltipProvider>{children}</TooltipProvider>
-        </QueryProviders>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

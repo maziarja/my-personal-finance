@@ -1,60 +1,119 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
+import {
+  Landmark,
+  PiggyBank,
+  CreditCard,
+  Banknote,
+  type LucideIcon,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { EditAccountDialog } from "@/components/accounts/edit-account-dialog";
 import { DeleteAccountDialog } from "@/components/accounts/delete-account-dialog";
 
-export interface Account {
+export type Account = {
   id: string;
   name: string;
   type: "CHECKING" | "SAVING" | "CREDIT_CARD" | "CASH";
   balance: number;
-}
+};
 
-const TYPE_LABELS: Record<Account["type"], string> = {
-  CHECKING: "Checking",
-  SAVING: "Saving",
-  CREDIT_CARD: "Credit Card",
-  CASH: "Cash",
+const TYPE_CONFIG: Record<
+  Account["type"],
+  {
+    label: string;
+    icon: LucideIcon;
+    iconBg: string;
+    iconColor: string;
+    labelColor: string;
+  }
+> = {
+  CHECKING: {
+    label: "Checking",
+    icon: Landmark,
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-500",
+    labelColor: "text-blue-600 dark:text-blue-400",
+  },
+  SAVING: {
+    label: "Saving",
+    icon: PiggyBank,
+    iconBg: "bg-emerald-500/10",
+    iconColor: "text-emerald-500",
+    labelColor: "text-emerald-600 dark:text-emerald-400",
+  },
+  CREDIT_CARD: {
+    label: "Credit Card",
+    icon: CreditCard,
+    iconBg: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    labelColor: "text-orange-600 dark:text-orange-400",
+  },
+  CASH: {
+    label: "Cash",
+    icon: Banknote,
+    iconBg: "bg-violet-500/10",
+    iconColor: "text-violet-500",
+    labelColor: "text-violet-600 dark:text-violet-400",
+  },
 };
 
 const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    amount,
+  );
 
-interface AccountCardProps {
+type AccountCardProps = {
   account: Account;
-}
+};
 
 export function AccountCard({ account }: AccountCardProps) {
+  const config = TYPE_CONFIG[account.type];
+  const Icon = config.icon;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{account.name}</CardTitle>
-        <CardAction>
-          <div className="flex items-center gap-1">
-            <EditAccountDialog account={account} />
-            <DeleteAccountDialog accountId={account.id} accountName={account.name} />
-          </div>
-        </CardAction>
-        <span className="w-fit rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-          {TYPE_LABELS[account.type]}
-        </span>
-      </CardHeader>
-      <CardContent>
+    <Card className="flex min-h-[160px] flex-col gap-0 p-0">
+      {/* Top: name (capitalized) + actions */}
+      <div className="flex items-start justify-between px-6 pt-6">
+        <p className="text-xl font-semibold capitalize">{account.name}</p>
+        <div className="flex items-center gap-1">
+          <EditAccountDialog account={account} />
+          <DeleteAccountDialog
+            accountId={account.id}
+            accountName={account.name}
+          />
+        </div>
+      </div>
+
+      {/* Bottom: balance left, type right */}
+      <div className="mt-auto flex items-end justify-between px-6 pb-6">
         <p
           className={cn(
-            "text-2xl font-semibold tabular-nums",
+            "text-2xl font-bold tracking-tight tabular-nums",
             account.balance < 0
               ? "text-destructive"
               : account.balance === 0
                 ? "text-muted-foreground"
-                : "text-foreground"
+                : "text-foreground",
           )}
         >
           {formatCurrency(account.balance)}
         </p>
-      </CardContent>
+        <div className="flex items-center gap-2">
+          <div
+            className={cn(
+              "flex size-7 items-center justify-center rounded-md",
+              config.iconBg,
+            )}
+          >
+            <Icon className={cn("size-4", config.iconColor)} />
+          </div>
+          <span className={cn("text-sm font-semibold", config.labelColor)}>
+            {config.label}
+          </span>
+        </div>
+      </div>
     </Card>
   );
 }

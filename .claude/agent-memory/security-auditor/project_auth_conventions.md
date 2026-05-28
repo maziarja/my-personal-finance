@@ -13,6 +13,10 @@ metadata:
 2. `app/(app)/layout.tsx` (Server Component layout) — calls `getSession()`, redirects to "/" if no session
 3. Individual Server Actions MUST also call `getSession()` and scope every Prisma query to `userId`
 
+## ownerId vs userId field naming
+
+`FinancialAccount` model uses `ownerId` (not `userId`) as the FK to `User`. All other app models (`Category`, `Transaction`, `Budget`, `Goal`) use `userId`. Server Actions must filter by the correct field name per model — using the wrong field name is a critical data isolation bug. Confirmed correct in `accountActions.ts`: all four actions use `ownerId: session.user.id`.
+
 ## nextCookies() plugin
 `lib/auth.ts` uses `nextCookies()` as the last plugin. This allows Better Auth's signIn/signUp/signOut Server Actions to set/clear cookies without explicitly passing headers to `auth.api.signInEmail()` etc. This is correct and intentional — do not flag missing headers on signIn/signUp calls as a bug.
 

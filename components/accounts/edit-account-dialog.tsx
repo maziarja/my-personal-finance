@@ -14,16 +14,24 @@ import {
 import { AccountForm } from "@/components/accounts/account-form";
 import { type AccountFormType } from "@/lib/schemas/accountSchema";
 import { type Account } from "@/components/accounts/account-card";
+import { useAccountMutations } from "@/hooks/useAccountMutations";
 
-interface EditAccountDialogProps {
+type EditAccountDialogProps = {
   account: Account;
-}
+};
 
 export function EditAccountDialog({ account }: EditAccountDialogProps) {
   const [open, setOpen] = useState(false);
 
-  async function handleSubmit(data: AccountFormType): Promise<void | { error: string }> {
-    // user wires updateFinancialAccount server action here
+  const id = account.id;
+  const { update } = useAccountMutations();
+
+  async function handleSubmit(
+    data: AccountFormType,
+  ): Promise<void | { error: string }> {
+    const updatedAccount = { ...data, id };
+    update(updatedAccount);
+    setOpen(false);
   }
 
   return (
@@ -53,7 +61,9 @@ export function EditAccountDialog({ account }: EditAccountDialogProps) {
             onSubmit={handleSubmit}
           />
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button type="submit" form="edit-account-form">
               Save changes
             </Button>

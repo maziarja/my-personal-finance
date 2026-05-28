@@ -13,12 +13,18 @@ import {
 } from "@/components/ui/dialog";
 import { AccountForm } from "@/components/accounts/account-form";
 import { type AccountFormType } from "@/lib/schemas/accountSchema";
+import { useAccountMutations } from "@/hooks/useAccountMutations";
 
 export function CreateAccountDialog() {
   const [open, setOpen] = useState(false);
 
-  async function handleSubmit(_data: AccountFormType): Promise<void | { error: string }> {
-    // user wires createFinancialAccount server action here
+  const { create } = useAccountMutations();
+
+  async function handleSubmit(
+    data: AccountFormType,
+  ): Promise<void | { error: string }> {
+    create(data);
+    setOpen(false);
   }
 
   return (
@@ -33,12 +39,11 @@ export function CreateAccountDialog() {
           <DialogHeader>
             <DialogTitle>Add account</DialogTitle>
           </DialogHeader>
-          <AccountForm
-            id="create-account-form"
-            onSubmit={handleSubmit}
-          />
+          <AccountForm id="create-account-form" onSubmit={handleSubmit} />
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button type="submit" form="create-account-form">
               Create
             </Button>

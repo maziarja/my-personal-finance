@@ -11,17 +11,23 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useAccountMutations } from "@/hooks/useAccountMutations";
 
 interface DeleteAccountDialogProps {
   accountId: string;
   accountName: string;
 }
 
-export function DeleteAccountDialog({ accountId, accountName }: DeleteAccountDialogProps) {
+export function DeleteAccountDialog({
+  accountId,
+  accountName,
+}: DeleteAccountDialogProps) {
   const [open, setOpen] = useState(false);
 
+  const { remove } = useAccountMutations();
+
   function handleDelete() {
-    // user wires deleteFinancialAccount server action here
+    remove(accountId);
     setOpen(false);
   }
 
@@ -41,13 +47,17 @@ export function DeleteAccountDialog({ accountId, accountName }: DeleteAccountDia
           <DialogHeader>
             <DialogTitle>Delete account</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Are you sure you want to delete{" "}
-            <strong className="font-medium text-foreground">{accountName}</strong>? This
-            action cannot be undone.
+            <strong className="text-foreground font-medium">
+              {accountName}
+            </strong>
+            ? This action cannot be undone.
           </p>
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button variant="destructive" onClick={handleDelete}>
               Delete
             </Button>
