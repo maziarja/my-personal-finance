@@ -5,22 +5,40 @@ import { TransactionFilters } from "@/components/transactions/transaction-filter
 import { TransactionTable } from "@/components/transactions/transaction-table";
 import { TransactionsEmpty } from "@/components/transactions/transactions-empty";
 import { TransactionsError } from "@/components/transactions/transactions-error";
-import type { Transaction } from "@/components/transactions/transaction-table";
-import type { AccountOption, CategoryOption } from "@/components/transactions/transaction-form";
+import { useQuery } from "@tanstack/react-query";
+import { getTransactions } from "@/app/_actions/transactionActions";
+import { getCategories } from "@/app/_actions/categoryActions";
+import { getAccounts } from "@/app/_actions/accountActions";
 
 export function TransactionList() {
-  const transactions: Transaction[] = [];
-  const accounts: AccountOption[] = [];
-  const categories: CategoryOption[] = [];
-  const isError = false;
-  const refetch = () => {};
+  const {
+    data: transactions,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: getTransactions,
+  });
 
-  if (isError) {
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
+  const { data: accounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: getAccounts,
+  });
+
+  if (
+    isError ||
+    (transactions && "error" in transactions) ||
+    (categories && "error" in categories) ||
+    (accounts && "error" in accounts)
+  ) {
     return <TransactionsError onRetry={refetch} />;
   }
-
-  if (transactions.length === 0) {
-    return <TransactionsEmpty />;
+  if (!transactions || !accounts || !categories || transactions?.length === 0) {
+    return <TransactionsEmpty accounts={accounts} categories={categories} />;
   }
 
   return (

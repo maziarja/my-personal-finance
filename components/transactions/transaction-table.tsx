@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronsUpDown, NotebookPen } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Table,
   TableBody,
@@ -18,6 +24,7 @@ import type {
   AccountOption,
   CategoryOption,
 } from "@/components/transactions/transaction-form";
+import { AccountType } from "@/app/generated/prisma/enums";
 
 export type Transaction = {
   id: string;
@@ -26,7 +33,7 @@ export type Transaction = {
   date: string | Date;
   notes?: string | null;
   category: { id: string; name: string; color: string };
-  financialAccount: { id: string; name: string };
+  financialAccount: { id: string; name: string; type: AccountType };
 };
 
 type SortColumn = "date" | "amount" | "type" | "category" | "account";
@@ -163,6 +170,16 @@ function TransactionRow({
             style={{ backgroundColor: transaction.category.color }}
           />
           <span>{transaction.category.name}</span>
+          {transaction.notes && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger render={<span className="inline-flex" tabIndex={0} />}>
+                  <NotebookPen className="text-muted-foreground size-3.5 shrink-0" />
+                </TooltipTrigger>
+                <TooltipContent>{transaction.notes}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
       </TableCell>
 

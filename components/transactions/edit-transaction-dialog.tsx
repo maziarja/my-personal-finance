@@ -12,9 +12,13 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { TransactionForm } from "@/components/transactions/transaction-form";
-import type { AccountOption, CategoryOption } from "@/components/transactions/transaction-form";
+import type {
+  AccountOption,
+  CategoryOption,
+} from "@/components/transactions/transaction-form";
 import { type TransactionFormType } from "@/lib/schemas/transactionSchema";
 import type { Transaction } from "@/components/transactions/transaction-table";
+import { useTransactionMutations } from "@/hooks/useTransactionMutations";
 
 interface EditTransactionDialogProps {
   transaction: Transaction;
@@ -28,11 +32,16 @@ export function EditTransactionDialog({
   categories,
 }: EditTransactionDialogProps) {
   const [open, setOpen] = useState(false);
-
+  const { update } = useTransactionMutations();
   async function handleSubmit(
-    _data: TransactionFormType,
+    data: TransactionFormType,
+    account: AccountOption,
+    category: CategoryOption,
   ): Promise<void | { error: string }> {
     setOpen(false);
+    const id = transaction.id;
+    const updatedTransaction = { ...data, id };
+    update({ updatedTransaction, category, account });
   }
 
   return (
@@ -69,7 +78,9 @@ export function EditTransactionDialog({
             onSubmit={handleSubmit}
           />
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button type="submit" form="edit-transaction-form">
               Save changes
             </Button>

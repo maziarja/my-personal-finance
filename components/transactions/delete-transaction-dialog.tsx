@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useTransactionMutations } from "@/hooks/useTransactionMutations";
 
 interface DeleteTransactionDialogProps {
   transactionId: string;
@@ -19,19 +20,20 @@ interface DeleteTransactionDialogProps {
 }
 
 export function DeleteTransactionDialog({
-  transactionId: _transactionId,
+  transactionId: transactionId,
   amount,
   date,
 }: DeleteTransactionDialogProps) {
   const [open, setOpen] = useState(false);
-
+  const { remove } = useTransactionMutations();
   const formattedDate =
     typeof date === "string"
       ? new Date(date).toLocaleDateString()
       : date.toLocaleDateString();
 
-  function handleDelete() {
+  async function handleDelete() {
     setOpen(false);
+    remove(transactionId);
   }
 
   return (
@@ -60,7 +62,9 @@ export function DeleteTransactionDialog({
             ? This action cannot be undone.
           </p>
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button variant="destructive" onClick={handleDelete}>
               Delete
             </Button>

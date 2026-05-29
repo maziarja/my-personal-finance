@@ -15,8 +15,9 @@ import {
   transactionFormSchema,
   type TransactionFormType,
 } from "@/lib/schemas/transactionSchema";
+import { AccountType } from "@/app/generated/prisma/enums";
 
-export type AccountOption = { id: string; name: string; type: string };
+export type AccountOption = { id: string; name: string; type: AccountType };
 export type CategoryOption = { id: string; name: string; color: string };
 
 const ACCOUNT_TYPE_LABELS: Record<string, string> = {
@@ -36,7 +37,11 @@ type TransactionFormProps = {
   defaultValues?: Partial<TransactionFormType>;
   accounts: AccountOption[];
   categories: CategoryOption[];
-  onSubmit: (data: TransactionFormType) => Promise<void | { error: string }>;
+  onSubmit: (
+    data: TransactionFormType,
+    account: AccountOption,
+    category: CategoryOption,
+  ) => Promise<void | { error: string }>;
 };
 
 export function TransactionForm({
@@ -59,9 +64,17 @@ export function TransactionForm({
   });
 
   async function handleSubmit(data: TransactionFormType) {
-    const result = await onSubmit(data);
-    if (result?.error) {
-      form.setError("root", { message: result.error });
+    const account = accounts.find(
+      (acc) => acc.id === form.getValues("financialAccountId"),
+    );
+    const category = categories.find(
+      (cat) => cat.id === form.getValues("categoryId"),
+    );
+    if (account && category) {
+      const result = await onSubmit(data, account, category);
+      if (result?.error) {
+        form.setError("root", { message: result.error });
+      }
     }
   }
 
@@ -158,17 +171,19 @@ export function TransactionForm({
                 </span>
               </SelectTrigger>
               <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="size-3 shrink-0 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      />
-                      {category.name}
-                    </div>
-                  </SelectItem>
-                ))}
+                {categories.map((category) => {
+                  return (
+                    <SelectItem key={category.id} value={category.id}>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="size-3 shrink-0 rounded-full"
+                          style={{ backgroundColor: category.color }}
+                        />
+                        {category.name}
+                      </div>
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
             {fieldState.error && (
@@ -197,21 +212,21 @@ export function TransactionForm({
                     !field.value && "text-muted-foreground",
                   )}
                 >
-                  {field.value ? (
-                    (() => {
-                      const a = accounts.find((acc) => acc.id === field.value);
-                      return a ? (
-                        <>
-                          {a.name}
-                          <span className="text-muted-foreground ml-1">
-                            · {ACCOUNT_TYPE_LABELS[a.type] ?? a.type}
-                          </span>
-                        </>
-                      ) : null;
-                    })()
-                  ) : (
-                    "Select account"
-                  )}
+                  {field.value
+                    ? (() => {
+                        const a = accounts.find(
+                          (acc) => acc.id === field.value,
+                        );
+                        return a ? (
+                          <>
+                            {a.name}
+                            <span className="text-muted-foreground ml-1">
+                              · {ACCOUNT_TYPE_LABELS[a.type] ?? a.type}
+                            </span>
+                          </>
+                        ) : null;
+                      })()
+                    : "Select account"}
                 </span>
               </SelectTrigger>
               <SelectContent>
