@@ -9,15 +9,36 @@ import {
   UpdatedTransactionFormType,
 } from "@/lib/schemas/transactionSchema";
 import { revalidatePath } from "next/cache";
+import { TransactionType } from "../generated/prisma/enums";
 
-export async function getTransactions() {
+type ActiveFilters = {
+  accountId?: string;
+  categoryId?: string;
+  type?: TransactionType;
+  from?: string;
+  to?: string;
+};
+
+export async function getTransactions(activeFilters: ActiveFilters) {
   const session = await getSession();
   if (!session || !session.user) {
     throw new Error("Unauthorized");
   }
   try {
     const transactions = await prisma.transaction.findMany({
-      where: { userId: session.user.id },
+      where: {
+        userId: session.user.id,
+        financialAccountId: activeFilters.accountId,
+        categoryId: activeFilters.categoryId,
+        type: activeFilters.type,
+        date: {
+          ...(activeFilters.from && { gte: new Date(activeFilters.from) }),
+          ...(activeFilters.to && {
+            lte: new Date(activeFilters.to + "T23:59:59Z"),
+          }),
+        },
+      },
+
       include: {
         financialAccount: { select: { name: true, type: true, id: true } },
         category: { select: { id: true, color: true, name: true } },

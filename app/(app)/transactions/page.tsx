@@ -10,8 +10,8 @@ export default async function TransactionsPage() {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: ["transactions"],
-      queryFn: getTransactions,
+      queryKey: ["transactions", {}],
+      queryFn: () => getTransactions({}),
     }),
     queryClient.prefetchQuery({ queryKey: ["accounts"], queryFn: getAccounts }),
     queryClient.prefetchQuery({

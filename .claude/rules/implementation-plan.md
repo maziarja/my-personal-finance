@@ -5,6 +5,8 @@ Tasks are tagged by owner:
 - `[Logic]` — User implements this (Server Actions, Zustand, TanStack Query, Prisma)
 - `[Both]` — done together or sequentially
 
+> **Loading skeletons:** Build a skeleton for each section immediately after its UI is complete — not deferred to Phase 11.
+
 ---
 
 ## Phase 1 — Setup & Configuration
@@ -139,7 +141,7 @@ Define all models before building any features.
 
 ## Phase 11 — Polish & Deploy
 
-- [ ] `[UI]` Add loading skeletons for all list/table pages
+- [ ] `[UI]` ~~Add loading skeletons for all list/table pages~~ (done per-phase)
 - [ ] `[UI]` Add empty states for all sections (no accounts yet, no transactions yet, etc.)
 - [ ] `[UI]` Audit mobile responsiveness across all pages
 - [ ] `[Logic]` Add Zod validation to all Server Actions

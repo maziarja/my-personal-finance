@@ -7,16 +7,20 @@ import { CreateAccountDialog } from "@/components/accounts/create-account-dialog
 import { getCardSpan } from "@/lib/helpers/get-card-span";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/app/_actions/accountActions";
+import { AccountListSkeleton } from "@/components/accounts/account-list-skeleton";
 
 export function AccountList() {
   const {
     data: accounts,
     isError,
+    isPending,
     refetch,
   } = useQuery({
     queryKey: ["accounts"],
     queryFn: getAccounts,
   });
+
+  if (isPending) return <AccountListSkeleton />;
 
   if (isError || (accounts && "error" in accounts)) {
     return <AccountsError onRetry={refetch} />;

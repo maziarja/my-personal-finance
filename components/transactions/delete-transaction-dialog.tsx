@@ -28,8 +28,8 @@ export function DeleteTransactionDialog({
   const { remove } = useTransactionMutations();
   const formattedDate =
     typeof date === "string"
-      ? new Date(date).toLocaleDateString()
-      : date.toLocaleDateString();
+      ? new Date(date).toLocaleDateString("en-US", { timeZone: "UTC" })
+      : date.toLocaleDateString("en-US", { timeZone: "UTC" });
 
   async function handleDelete() {
     setOpen(false);

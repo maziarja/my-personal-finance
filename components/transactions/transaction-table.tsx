@@ -139,8 +139,8 @@ function TransactionRow({
 }) {
   const formattedDate =
     typeof transaction.date === "string"
-      ? new Date(transaction.date).toLocaleDateString()
-      : transaction.date.toLocaleDateString();
+      ? new Date(transaction.date).toLocaleDateString("en-US", { timeZone: "UTC" })
+      : transaction.date.toLocaleDateString("en-US", { timeZone: "UTC" });
 
   const formattedAmount = Number(transaction.amount).toLocaleString("en-US", {
     style: "currency",

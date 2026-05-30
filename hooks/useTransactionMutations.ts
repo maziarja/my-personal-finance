@@ -29,10 +29,11 @@ export function useTransactionMutations() {
     }) => createTransaction(data),
     onMutate: async ({ data, account, category }, context) => {
       // Cancel querying
-      await context.client.cancelQueries({ queryKey: ["transactions"] });
+      await context.client.cancelQueries({ queryKey: ["transactions", {}] });
       // Snapshot prev transaction
       const previousTransactions = context.client.getQueryData<Transaction[]>([
         "transactions",
+        {},
       ]);
       // Set optimistic transaction
       const optimisticTransaction = {
@@ -43,7 +44,7 @@ export function useTransactionMutations() {
         amount: Number(data.amount),
       };
       context.client.setQueryData<Transaction[]>(
-        ["transactions"],
+        ["transactions", {}],
         (old = []) => {
           return [...old, optimisticTransaction];
         },
@@ -56,7 +57,7 @@ export function useTransactionMutations() {
     // Role back on error
     onError: (err, _newTransaction, onMutateResult, context) => {
       context.client.setQueryData(
-        ["transactions"],
+        ["transactions", {}],
         onMutateResult?.previousTransactions,
       );
       toast.error(err.message);
@@ -67,7 +68,9 @@ export function useTransactionMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["transactions"] });
+      return context.client.invalidateQueries({
+        queryKey: ["transactions", {}],
+      });
     },
   });
 
@@ -83,14 +86,15 @@ export function useTransactionMutations() {
 
     onMutate: async ({ updatedTransaction, account, category }, context) => {
       // Cancel Querying
-      await context.client.cancelQueries({ queryKey: ["transactions"] });
+      await context.client.cancelQueries({ queryKey: ["transactions", {}] });
       // Snapshot previous transaction
       const previousTransaction = context.client.getQueryData<Transaction[]>([
         "transactions",
+        {},
       ]);
       // Set optimistic transaction
       context.client.setQueryData<Transaction[]>(
-        ["transactions"],
+        ["transactions", {}],
         (old = []) =>
           old.map((o) => {
             return o.id === updatedTransaction.id
@@ -112,7 +116,7 @@ export function useTransactionMutations() {
     // Role back on error
     onError: (err, _updatedTransaction, onMutateResult, context) => {
       context.client.setQueryData(
-        ["transactions"],
+        ["transactions", {}],
         onMutateResult?.previousTransaction,
       );
       toast.error(err.message);
@@ -128,7 +132,9 @@ export function useTransactionMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["transactions"] });
+      return context.client.invalidateQueries({
+        queryKey: ["transactions", {}],
+      });
     },
   });
 
@@ -137,14 +143,16 @@ export function useTransactionMutations() {
     mutationFn: (transactionId: string) => deleteTransaction(transactionId),
     onMutate: async (newId, context) => {
       // Cancel querying
-      await context.client.cancelQueries({ queryKey: ["transaction"] });
+      await context.client.cancelQueries({ queryKey: ["transaction", {}] });
       // Snapshot previous transactions
       const previousTransactions = context.client.getQueryData<Transaction[]>([
         "transactions",
+        {},
       ]);
       // Set optimistic transaction
-      context.client.setQueryData<Transaction[]>(["transactions"], (old = []) =>
-        old.filter((o) => o.id !== newId),
+      context.client.setQueryData<Transaction[]>(
+        ["transactions", {}],
+        (old = []) => old.filter((o) => o.id !== newId),
       );
       return { previousTransactions };
     },
@@ -152,7 +160,7 @@ export function useTransactionMutations() {
     // Role back on error
     onError: (err, _transactionId, onMutateResult, context) => {
       context.client.setQueryData(
-        ["transactions"],
+        ["transactions", {}],
         onMutateResult?.previousTransactions,
       );
       toast.error(err.message);
@@ -163,7 +171,9 @@ export function useTransactionMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["transactions"] });
+      return context.client.invalidateQueries({
+        queryKey: ["transactions", {}],
+      });
     },
   });
 

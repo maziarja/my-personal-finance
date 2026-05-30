@@ -6,16 +6,20 @@ import { CategoriesError } from "@/components/categories/categories-error";
 import { CreateCategoryDialog } from "@/components/categories/create-category-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/app/_actions/categoryActions";
+import { CategoryListSkeleton } from "@/components/categories/category-list-skeleton";
 
 export function CategoryList() {
   const {
     data: categories,
     isError,
+    isPending,
     refetch: onRetry,
   } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
   });
+
+  if (isPending) return <CategoryListSkeleton />;
 
   if ((categories && "error" in categories) || isError) {
     return <CategoriesError onRetry={onRetry ?? (() => {})} />;
