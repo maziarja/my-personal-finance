@@ -6,6 +6,7 @@ Tasks are tagged by owner:
 - `[Both]` — done together or sequentially
 
 > **Loading skeletons:** Build a skeleton for each section immediately after its UI is complete — not deferred to Phase 11.
+> **Route files:** Every page route must have a `loading.tsx` (renders the page shell + skeleton) and an `error.tsx` (`"use client"`, shows error UI with a retry button). Create these alongside the page.
 
 ---
 
