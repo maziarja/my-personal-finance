@@ -1,4 +1,5 @@
 import { getAccounts } from "@/app/_actions/accountActions";
+import { accountKey } from "@/lib/query-keys/accounts";
 import { AccountList } from "@/components/accounts/account-list";
 import { getQueryClient } from "@/lib/helpers/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -6,7 +7,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 export default async function AccountsPage() {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["accounts"],
+    queryKey: accountKey.list(),
     queryFn: getAccounts,
   });
 

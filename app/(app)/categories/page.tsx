@@ -1,4 +1,5 @@
 import { getCategories } from "@/app/_actions/categoryActions";
+import { categoryKey } from "@/lib/query-keys/categories";
 import { CategoryList } from "@/components/categories/category-list";
 import { getQueryClient } from "@/lib/helpers/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -7,7 +8,7 @@ export default async function CategoriesPage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["categories"],
+    queryKey: categoryKey.list(),
     queryFn: getCategories,
   });
 

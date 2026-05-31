@@ -19,6 +19,7 @@ type ActiveFilters = {
   to?: string;
 };
 
+
 export async function getTransactions(activeFilters: ActiveFilters) {
   const session = await getSession();
   if (!session || !session.user) {

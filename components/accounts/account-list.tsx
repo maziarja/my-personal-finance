@@ -7,6 +7,7 @@ import { CreateAccountDialog } from "@/components/accounts/create-account-dialog
 import { getCardSpan } from "@/lib/helpers/get-card-span";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/app/_actions/accountActions";
+import { accountKey } from "@/lib/query-keys/accounts";
 import { AccountListSkeleton } from "@/components/accounts/account-list-skeleton";
 
 export function AccountList() {
@@ -16,7 +17,7 @@ export function AccountList() {
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: accountKey.list(),
     queryFn: getAccounts,
   });
 

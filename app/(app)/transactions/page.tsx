@@ -2,7 +2,10 @@ import { TransactionList } from "@/components/transactions/transaction-list";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/helpers/get-query-client";
 import { getTransactions } from "@/app/_actions/transactionActions";
+import { transactionKeys } from "@/lib/query-keys/transactions";
 import { getAccounts } from "@/app/_actions/accountActions";
+import { accountKey } from "@/lib/query-keys/accounts";
+import { categoryKey } from "@/lib/query-keys/categories";
 import { getCategories } from "@/app/_actions/categoryActions";
 
 export default async function TransactionsPage() {
@@ -10,12 +13,12 @@ export default async function TransactionsPage() {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: ["transactions", {}],
+      queryKey: transactionKeys.list(),
       queryFn: () => getTransactions({}),
     }),
-    queryClient.prefetchQuery({ queryKey: ["accounts"], queryFn: getAccounts }),
+    queryClient.prefetchQuery({ queryKey: accountKey.list(), queryFn: getAccounts }),
     queryClient.prefetchQuery({
-      queryKey: ["categories"],
+      queryKey: categoryKey.list(),
       queryFn: getCategories,
     }),
   ]);

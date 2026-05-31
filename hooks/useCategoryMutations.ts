@@ -12,6 +12,7 @@ import {
 } from "@/lib/schemas/categorySchema";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { categoryKey } from "@/lib/query-keys/categories";
 
 export function useCategoryMutations() {
   //// Create
@@ -19,17 +20,15 @@ export function useCategoryMutations() {
     mutationFn: (data: CategoryFormType) => createCategory(data),
     onMutate: async (newCategory, context) => {
       // Cancel querying
-      await context.client.cancelQueries({ queryKey: ["categories"] });
+      await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot prev cat
-      const previousCategories = context.client.getQueryData<Category[]>([
-        "categories",
-      ]);
+      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
       // Set optimistic cat
       const optimisticCategory: Category = {
         id: crypto.randomUUID(),
         ...newCategory,
       };
-      context.client.setQueryData<Category[]>(["categories"], (old = []) =>
+      context.client.setQueryData<Category[]>(categoryKey.list(), (old = []) =>
         [...old, optimisticCategory].sort((a, b) =>
           a.name.localeCompare(b.name),
         ),
@@ -40,7 +39,7 @@ export function useCategoryMutations() {
     // Role back on error
     onError: (err, _newCategory, onMutateResult, context) => {
       context.client.setQueryData(
-        ["categories"],
+        categoryKey.list(),
         onMutateResult?.previousCategories,
       );
       toast.error(err.message);
@@ -51,7 +50,7 @@ export function useCategoryMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["categories"] });
+      return context.client.invalidateQueries({ queryKey: categoryKey.all() });
     },
   });
 
@@ -62,13 +61,11 @@ export function useCategoryMutations() {
 
     onMutate: async (newCategory, context) => {
       // Cancel Querying
-      await context.client.cancelQueries({ queryKey: ["categories"] });
+      await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot previous cat
-      const previousCategories = context.client.getQueryData<Category[]>([
-        "categories",
-      ]);
+      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
       // Set optimistic cat
-      context.client.setQueryData<Category[]>(["categories"], (old = []) =>
+      context.client.setQueryData<Category[]>(categoryKey.list(), (old = []) =>
         old
           .map((o) => {
             return o.id === newCategory.id
@@ -87,7 +84,7 @@ export function useCategoryMutations() {
     // Role back on error
     onError: (err, _updatedCategory, onMutateResult, context) => {
       context.client.setQueryData(
-        ["categories"],
+        categoryKey.list(),
         onMutateResult?.previousCategories,
       );
       toast.error(err.message);
@@ -97,7 +94,7 @@ export function useCategoryMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["categories"] });
+      return context.client.invalidateQueries({ queryKey: categoryKey.all() });
     },
   });
 
@@ -106,13 +103,11 @@ export function useCategoryMutations() {
     mutationFn: (categoryId: string) => deleteCategory(categoryId),
     onMutate: async (newId, context) => {
       // Cancel querying
-      await context.client.cancelQueries({ queryKey: ["categories"] });
+      await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot previous cat
-      const previousCategories = context.client.getQueryData<Category[]>([
-        "categories",
-      ]);
+      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
       // Set optimistic cat
-      context.client.setQueryData<Category[]>(["categories"], (old = []) =>
+      context.client.setQueryData<Category[]>(categoryKey.list(), (old = []) =>
         old.filter((o) => o.id !== newId),
       );
       return { previousCategories };
@@ -121,7 +116,7 @@ export function useCategoryMutations() {
     // Role back on error
     onError: (err, _categoryId, onMutateResult, context) => {
       context.client.setQueryData(
-        ["categories"],
+        categoryKey.list(),
         onMutateResult?.previousCategories,
       );
       toast.error(err.message);
@@ -132,7 +127,7 @@ export function useCategoryMutations() {
       if (data && "error" in data) {
         toast.error(data.error);
       }
-      return context.client.invalidateQueries({ queryKey: ["categories"] });
+      return context.client.invalidateQueries({ queryKey: categoryKey.all() });
     },
   });
 

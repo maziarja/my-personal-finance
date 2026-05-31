@@ -10,6 +10,9 @@ import { getTransactions } from "@/app/_actions/transactionActions";
 import { getCategories } from "@/app/_actions/categoryActions";
 import { getAccounts } from "@/app/_actions/accountActions";
 import { useTransactionFiltersStore } from "@/hooks/useTransactionFiltersStore";
+import { transactionKeys } from "@/lib/query-keys/transactions";
+import { accountKey } from "@/lib/query-keys/accounts";
+import { categoryKey } from "@/lib/query-keys/categories";
 import { TransactionTableSkeleton } from "@/components/transactions/transaction-table-skeleton";
 
 export function TransactionList() {
@@ -40,16 +43,16 @@ export function TransactionList() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["transactions", activeFilters],
+    queryKey: transactionKeys.list(activeFilters),
     queryFn: () => getTransactions(activeFilters),
   });
 
   const { data: categories } = useQuery({
-    queryKey: ["categories"],
+    queryKey: categoryKey.list(),
     queryFn: getCategories,
   });
   const { data: accounts } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: accountKey.list(),
     queryFn: getAccounts,
   });
 

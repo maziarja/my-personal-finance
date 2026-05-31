@@ -6,6 +6,7 @@ import { CategoriesError } from "@/components/categories/categories-error";
 import { CreateCategoryDialog } from "@/components/categories/create-category-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/app/_actions/categoryActions";
+import { categoryKey } from "@/lib/query-keys/categories";
 import { CategoryListSkeleton } from "@/components/categories/category-list-skeleton";
 
 export function CategoryList() {
@@ -15,7 +16,7 @@ export function CategoryList() {
     isPending,
     refetch: onRetry,
   } = useQuery({
-    queryKey: ["categories"],
+    queryKey: categoryKey.list(),
     queryFn: getCategories,
   });
 
