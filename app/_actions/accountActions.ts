@@ -4,9 +4,9 @@ import { getSession } from "@/lib/helpers/getSession";
 import prisma from "@/lib/prisma";
 import {
   accountFormSchema,
-  AccountFormType,
+  type AccountFormType,
   updatedAccountFormSchema,
-  UpdatedAccountFormType,
+  type UpdatedAccountFormType,
 } from "@/lib/schemas/accountSchema";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "../generated/prisma/client";
