@@ -91,15 +91,29 @@ Define all models before building any features.
 
 ## Phase 7 — Transactions
 
-- [ ] `[UI]` Build transactions list page — sortable table with columns: date, description, category, account, amount
-- [ ] `[UI]` Build filter bar — filter by account, category, type (income/expense), date range
-- [ ] `[UI]` Build add transaction dialog — amount, type, category (select), account (select), date, notes
-- [ ] `[UI]` Build edit transaction dialog (same form, pre-filled)
-- [ ] `[UI]` Add delete confirmation
-- [ ] `[Logic]` Server Action: `createTransaction`, `updateTransaction`, `deleteTransaction`
-- [ ] `[Logic]` Server Component: fetch transactions (with filters) and pass to client
-- [ ] `[Logic]` TanStack Query: `useTransactions`, wire mutations
-- [ ] `[Logic]` Zustand: store active filters (account, category, type, date range)
+- [x] `[UI]` Build transactions list page — sortable table with columns: date, type, category, account, amount, from, to
+- [x] `[UI]` Build filter bar — filter by account, category, type (income/expense), date range
+- [x] `[UI]` Build add transaction dialog — amount, type, category (select), account (select), date, notes, optional recipient email (P2P)
+- [x] `[UI]` Build edit transaction dialog (same form, pre-filled; disabled for P2P transactions)
+- [x] `[UI]` Add delete confirmation (normal transactions only)
+- [x] `[UI]` Build skeleton and loading/error pages
+- [x] `[Logic]` Server Action: `createTransaction`, `updateTransaction`, `deleteTransaction`
+- [x] `[Logic]` Server Component: fetch transactions (with filters) and pass to client
+- [x] `[Logic]` TanStack Query: `useTransactions`, wire mutations
+- [x] `[Logic]` Zustand: store active filters (account, category, type, date range)
+
+### Phase 7b — P2P Transfers
+
+- [x] `[UI]` `AcceptTransactionDialog` — receiver picks account + category to accept incoming transfer
+- [x] `[UI]` `CancelTransactionDialog` — sender cancels a pending outgoing transfer
+- [x] `[UI]` `RejectTransactionDialog` — receiver declines a pending incoming transfer
+- [x] `[UI]` Action column logic — correct buttons per transaction type and status; COMPLETE P2P has no actions
+- [x] `[UI]` Status badges — Pending (amber), Cancelled (slate), Rejected (rose)
+- [ ] `[Logic]` Prisma: add `CANCELLED` and `REJECTED` to `TransactionStatus` enum; run migration
+- [ ] `[Logic]` Server Action: `acceptTransaction` — mark both records COMPLETE, increment receiver balance
+- [ ] `[Logic]` Server Action: `cancelTransaction` — mark both records CANCELLED; no balance change
+- [ ] `[Logic]` Server Action: `rejectTransaction` — mark both records REJECTED; no balance change
+- [ ] `[Logic]` TanStack Query: add `accept`, `cancel`, `reject` mutations to `useTransactionMutations`
 
 ---
 

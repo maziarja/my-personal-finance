@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  acceptTransaction,
+  cancelTransaction,
   createTransaction,
   deleteTransaction,
-  updateTransaction,
+  rejectTransaction,
 } from "@/app/_actions/transactionActions";
 import { transactionKeys } from "@/lib/query-keys/transactions";
 import {
@@ -12,11 +14,15 @@ import {
 } from "@/components/transactions/transaction-form";
 import { Transaction } from "@/components/transactions/transaction-table";
 import {
+  AcceptTransactionFormType,
   TransactionFormType,
-  UpdatedTransactionFormType,
 } from "@/lib/schemas/transactionSchema";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import {
+  TransactionStatus,
+  TransactionType,
+} from "@/app/generated/prisma/enums";
 
 export function useTransactionMutations() {
   //// Create transaction
@@ -41,6 +47,8 @@ export function useTransactionMutations() {
         ...data,
         financialAccount: account,
         category: category,
+        ...(data.to && { status: TransactionStatus.PENDING }),
+        ...(data.to && { type: TransactionType.EXPENSE }),
         amount: Number(data.amount),
       };
       context.client.setQueryData<Transaction[]>(
@@ -74,70 +82,7 @@ export function useTransactionMutations() {
     },
   });
 
-  // Update transaction
-  const { mutate: update } = useMutation({
-    mutationFn: ({
-      updatedTransaction,
-    }: {
-      updatedTransaction: UpdatedTransactionFormType;
-      account: AccountOption;
-      category: CategoryOption;
-    }) => updateTransaction(updatedTransaction),
-
-    onMutate: async ({ updatedTransaction, account, category }, context) => {
-      // Cancel Querying
-      await context.client.cancelQueries({ queryKey: transactionKeys.all() });
-      // Snapshot previous transaction
-      const previousTransaction = context.client.getQueryData<Transaction[]>(
-        transactionKeys.list(),
-      );
-      // Set optimistic transaction
-      context.client.setQueryData<Transaction[]>(
-        transactionKeys.list(),
-        (old = []) =>
-          old.map((o) => {
-            return o.id === updatedTransaction.id
-              ? {
-                  ...o,
-                  ...updatedTransaction,
-                  financialAccount: account,
-                  category,
-                  amount: Number(updatedTransaction.amount),
-                }
-              : o;
-          }),
-        //   sort here later on
-      );
-
-      return { previousTransaction };
-    },
-
-    // Role back on error
-    onError: (err, _updatedTransaction, onMutateResult, context) => {
-      context.client.setQueryData(
-        transactionKeys.list(),
-        onMutateResult?.previousTransaction,
-      );
-      toast.error(err.message);
-    },
-
-    onSettled: (
-      data,
-      _error,
-      _updatedTransaction,
-      _onMutateResult,
-      context,
-    ) => {
-      if (data && "error" in data) {
-        toast.error(data.error);
-      }
-      return context.client.invalidateQueries({
-        queryKey: transactionKeys.all(),
-      });
-    },
-  });
-
-  //   //// Delete transaction
+  //// Delete transaction
   const { mutate: remove } = useMutation({
     mutationFn: (transactionId: string) => deleteTransaction(transactionId),
     onMutate: async (newId, context) => {
@@ -175,5 +120,151 @@ export function useTransactionMutations() {
     },
   });
 
-  return { create, update, remove };
+  /// Accept transaction
+
+  const { mutate: accept } = useMutation({
+    mutationFn: ({
+      dataWithId,
+    }: {
+      dataWithId: AcceptTransactionFormType & { transactionId: string };
+      category: CategoryOption;
+      financialAccount: AccountOption;
+    }) => acceptTransaction(dataWithId),
+    onMutate: async ({ dataWithId, category, financialAccount }, context) => {
+      // Cancel the querying
+      await context.client.cancelQueries({
+        queryKey: transactionKeys.all(),
+      });
+      // Snapshot prev value
+      const previousTransaction = context.client.getQueryData<Transaction[]>(
+        transactionKeys.list(),
+      );
+      // Optimistic transaction update
+      const optimisticTransaction = {
+        dataWithId,
+        category,
+        financialAccount,
+        status: TransactionStatus.COMPLETE,
+      };
+
+      context.client.setQueryData<Transaction[]>(
+        transactionKeys.list(),
+        (old = []) =>
+          old.map((o) =>
+            o.id === optimisticTransaction.dataWithId.transactionId
+              ? { ...o, ...optimisticTransaction }
+              : o,
+          ),
+      );
+      return { previousTransaction };
+    },
+    //  Role back on error
+    onError: (err, _updatedTransaction, onMutateResult, context) => {
+      toast.error(err.message);
+
+      context.client.setQueryData(
+        transactionKeys.list(),
+        onMutateResult?.previousTransaction,
+      );
+    },
+
+    onSettled: (data, _error, _variables, _onMutateResult, context) => {
+      if (data && "error" in data) toast.error(data.error);
+
+      return context.client.invalidateQueries({
+        queryKey: transactionKeys.all(),
+      });
+    },
+  });
+
+  //  Cancel a transaction
+  const { mutate: cancel } = useMutation({
+    mutationFn: (transactionId: string) => cancelTransaction(transactionId),
+
+    onMutate: async (transactionId, context) => {
+      // Cancel querying
+      await context.client.cancelQueries({ queryKey: transactionKeys.all() });
+      // Snapshot of a prev transactions list
+      const previousTransactions = context.client.getQueryData<Transaction[]>(
+        transactionKeys.list(),
+      );
+
+      // Set optimistic transaction
+      context.client.setQueryData<Transaction[]>(
+        transactionKeys.list(),
+        (old = []) =>
+          old.map((o) =>
+            o.id === transactionId
+              ? { ...o, status: TransactionStatus.CANCELED }
+              : o,
+          ),
+      );
+
+      return { previousTransactions };
+    },
+
+    //  Role back on error
+    onError: (err, _updatedTransaction, onMutateResult, context) => {
+      toast.error(err.message);
+
+      context.client.setQueryData(
+        transactionKeys.list(),
+        onMutateResult?.previousTransactions,
+      );
+    },
+
+    onSettled: (data, _error, _variables, _onMutateResult, context) => {
+      if (data && "error" in data) toast.error(data.error);
+
+      return context.client.invalidateQueries({
+        queryKey: transactionKeys.all(),
+      });
+    },
+  });
+  // Reject a transaction
+  const { mutate: reject } = useMutation({
+    mutationFn: (transactionId: string) => rejectTransaction(transactionId),
+
+    onMutate: async (transactionId, context) => {
+      // Cancel querying
+      await context.client.cancelQueries({ queryKey: transactionKeys.all() });
+      // Snapshot of a prev transactions list
+      const previousTransactions = context.client.getQueryData<Transaction[]>(
+        transactionKeys.list(),
+      );
+
+      // Set optimistic transaction
+      context.client.setQueryData<Transaction[]>(
+        transactionKeys.list(),
+        (old = []) =>
+          old.map((o) =>
+            o.id === transactionId
+              ? { ...o, status: TransactionStatus.REJECTED }
+              : o,
+          ),
+      );
+
+      return { previousTransactions };
+    },
+
+    //  Role back on error
+    onError: (err, _updatedTransaction, onMutateResult, context) => {
+      toast.error(err.message);
+
+      context.client.setQueryData(
+        transactionKeys.list(),
+        onMutateResult?.previousTransactions,
+      );
+    },
+
+    onSettled: (data, _error, _variables, _onMutateResult, context) => {
+      if (data && "error" in data) toast.error(data.error);
+
+      return context.client.invalidateQueries({
+        queryKey: transactionKeys.all(),
+      });
+    },
+  });
+
+  return { create, remove, accept, cancel, reject };
 }

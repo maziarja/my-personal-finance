@@ -119,18 +119,29 @@ enum TransactionType {
   EXPENSE
 }
 
+enum TransactionStatus {
+  PENDING
+  COMPLETE
+  REJECTED
+  CANCELED
+}
+
 model Transaction {
-  id                 String           @id @default(uuid())
+  id                 String             @id @default(uuid())
   amount             Decimal
   type               TransactionType
-  date               DateTime         @default(now())
+  date               DateTime           @default(now())
   notes              String?
-  financialAccount   FinancialAccount @relation(fields: [financialAccountId], references: [id], onDelete: Cascade)
-  financialAccountId String
-  categoryId         String
+  financialAccount   FinancialAccount?  @relation(fields: [financialAccountId], references: [id], onDelete: Cascade)
+  financialAccountId String?
+  categoryId         String?
+  transferId         String?
+  status             TransactionStatus?
+  to                 String?
+  from               String?
 
-  category Category @relation(fields: [categoryId], references: [id])
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id])
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
 
   @@index([userId])

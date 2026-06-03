@@ -55,13 +55,16 @@ export function TransactionForm({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
       amount: defaultValues?.amount ?? "",
-      type: defaultValues?.type,
+      type: defaultValues?.type ?? "EXPENSE",
+      to: defaultValues?.to ?? "",
       categoryId: defaultValues?.categoryId ?? "",
       financialAccountId: defaultValues?.financialAccountId ?? "",
       date: defaultValues?.date ?? new Date().toISOString().split("T")[0],
       notes: defaultValues?.notes ?? "",
     },
   });
+
+  const toValue = form.watch("to");
 
   async function handleSubmit(data: TransactionFormType) {
     const account = accounts.find(
@@ -103,50 +106,81 @@ export function TransactionForm({
             </Field.Root>
           )}
         />
-
-        <Controller
-          control={form.control}
-          name="type"
-          render={({ field, fieldState }) => (
-            <Field.Root
-              invalid={!!fieldState.error}
-              className="flex flex-col gap-1.5"
-            >
-              <Field.Label className="text-sm font-medium">Type</Field.Label>
-              <Select
-                value={field.value ?? null}
-                onValueChange={field.onChange}
+        {!toValue && (
+          <Controller
+            control={form.control}
+            name="type"
+            render={({ field, fieldState }) => (
+              <Field.Root
+                invalid={!!fieldState.error}
+                className="flex flex-col gap-1.5"
               >
-                <SelectTrigger className="w-full">
-                  <span
-                    className={cn(
-                      "flex flex-1 text-left text-sm",
-                      !field.value && "text-muted-foreground",
-                    )}
-                  >
-                    {field.value
-                      ? TRANSACTION_TYPES.find((t) => t.value === field.value)
-                          ?.label
-                      : "Select type"}
-                  </span>
-                </SelectTrigger>
-                <SelectContent>
-                  {TRANSACTION_TYPES.map(({ value, label }) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {fieldState.error && (
-                <p className="text-destructive text-sm">
-                  {fieldState.error.message}
-                </p>
-              )}
-            </Field.Root>
-          )}
-        />
+                <Field.Label className="text-sm font-medium">Type</Field.Label>
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-full">
+                    <span
+                      className={cn(
+                        "flex flex-1 text-left text-sm",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value
+                        ? TRANSACTION_TYPES.find(
+                            (t) => t.value === field.value,
+                          )?.label
+                        : "Select type"}
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TRANSACTION_TYPES.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldState.error && (
+                  <p className="text-destructive text-sm">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </Field.Root>
+            )}
+          />
+        )}
       </div>
+
+      <Controller
+        control={form.control}
+        name="to"
+        render={({ field, fieldState }) => (
+          <Field.Root
+            invalid={!!fieldState.error}
+            className="flex flex-col gap-1.5"
+          >
+            <Field.Label className="text-sm font-medium">
+              To{" "}
+              <span className="text-muted-foreground font-normal">
+                (optional)
+              </span>
+            </Field.Label>
+            <Input placeholder="John@smith.com" {...field} />
+            {toValue && (
+              <p className="text-muted-foreground text-xs">
+                P2P transactions are always recorded as Expense.
+              </p>
+            )}
+            {fieldState.error && (
+              <p className="text-destructive text-sm">
+                {fieldState.error.message}
+              </p>
+            )}
+          </Field.Root>
+        )}
+      />
 
       <Controller
         control={form.control}

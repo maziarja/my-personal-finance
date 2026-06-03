@@ -30,6 +30,8 @@ export function TransactionTableSkeleton() {
               <TableHead>Category</TableHead>
               <TableHead>Account</TableHead>
               <TableHead>Amount</TableHead>
+              <TableHead>From</TableHead>
+              <TableHead>To</TableHead>
               <TableHead className="w-12" />
             </TableRow>
           </TableHeader>
@@ -41,6 +43,8 @@ export function TransactionTableSkeleton() {
                 <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-20" /></TableCell>
                 <TableCell>
                   <div className="flex gap-1">
                     <Skeleton className="size-7 rounded-md" />

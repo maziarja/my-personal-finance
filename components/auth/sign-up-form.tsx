@@ -30,7 +30,7 @@ export function SignUpForm() {
 
   async function onSubmit(formData: SignUpType) {
     const result = await signUp(formData);
-    if (result.error) {
+    if (result?.error) {
       form.setError("root", { message: result.error });
     }
   }
