@@ -3,8 +3,8 @@
 import { getSession } from "@/lib/helpers/getSession";
 import prisma from "@/lib/prisma";
 import {
-  type AcceptTransactionFormType,
-  acceptTransactionSchema,
+  acceptTransactionActionSchema,
+  type AcceptTransactionActionType,
   transactionFormSchema,
   type TransactionFormType,
 } from "@/lib/schemas/transactionSchema";
@@ -40,6 +40,7 @@ export async function getTransactions(activeFilters: ActiveFilters) {
         },
       },
 
+      orderBy: [{ date: "desc" }, { createdAt: "desc" }],
       include: {
         financialAccount: { select: { name: true, type: true, id: true } },
         category: { select: { id: true, color: true, name: true } },
@@ -235,26 +236,24 @@ export async function deleteTransaction(transactionId: string) {
   }
 }
 
-export async function acceptTransaction(
-  formData: AcceptTransactionFormType & { transactionId: string },
-) {
+export async function acceptTransaction(formData: AcceptTransactionActionType) {
   const session = await getSession();
   if (!session || !session.user) {
     throw new Error("Unauthorized");
   }
 
-  const parsed = acceptTransactionSchema.safeParse(formData);
+  const parsed = acceptTransactionActionSchema.safeParse(formData);
   if (!parsed.success)
     return {
       error: parsed.error.issues[0].message,
     };
 
-  const { financialAccountId, categoryId } = parsed.data;
+  const { financialAccountId, categoryId, transactionId } = parsed.data;
 
   try {
     await prisma.$transaction(async (tx) => {
       const receiverTransaction = await tx.transaction.findUnique({
-        where: { userId: session.user.id, id: formData.transactionId },
+        where: { userId: session.user.id, id: transactionId },
         select: { amount: true, transferId: true, from: true },
       });
 
@@ -282,7 +281,7 @@ export async function acceptTransaction(
       await tx.transaction.update({
         where: {
           userId: session.user.id,
-          id: formData.transactionId,
+          id: transactionId,
           status: TransactionStatus.PENDING,
         },
         data: {

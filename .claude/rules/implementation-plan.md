@@ -92,12 +92,12 @@ Define all models before building any features.
 ## Phase 7 — Transactions
 
 - [x] `[UI]` Build transactions list page — sortable table with columns: date, type, category, account, amount, from, to
+- [x] `[UI]` Client-side sorting on all columns (localeCompare for strings, numeric diff for dates/amounts)
 - [x] `[UI]` Build filter bar — filter by account, category, type (income/expense), date range
 - [x] `[UI]` Build add transaction dialog — amount, type, category (select), account (select), date, notes, optional recipient email (P2P)
-- [x] `[UI]` Build edit transaction dialog (same form, pre-filled; disabled for P2P transactions)
-- [x] `[UI]` Add delete confirmation (normal transactions only)
+- [x] `[UI]` Add delete confirmation (normal transactions only; edit removed by design)
 - [x] `[UI]` Build skeleton and loading/error pages
-- [x] `[Logic]` Server Action: `createTransaction`, `updateTransaction`, `deleteTransaction`
+- [x] `[Logic]` Server Action: `createTransaction`, `deleteTransaction`
 - [x] `[Logic]` Server Component: fetch transactions (with filters) and pass to client
 - [x] `[Logic]` TanStack Query: `useTransactions`, wire mutations
 - [x] `[Logic]` Zustand: store active filters (account, category, type, date range)
@@ -109,11 +109,11 @@ Define all models before building any features.
 - [x] `[UI]` `RejectTransactionDialog` — receiver declines a pending incoming transfer
 - [x] `[UI]` Action column logic — correct buttons per transaction type and status; COMPLETE P2P has no actions
 - [x] `[UI]` Status badges — Pending (amber), Cancelled (slate), Rejected (rose)
-- [ ] `[Logic]` Prisma: add `CANCELLED` and `REJECTED` to `TransactionStatus` enum; run migration
-- [ ] `[Logic]` Server Action: `acceptTransaction` — mark both records COMPLETE, increment receiver balance
-- [ ] `[Logic]` Server Action: `cancelTransaction` — mark both records CANCELLED; no balance change
-- [ ] `[Logic]` Server Action: `rejectTransaction` — mark both records REJECTED; no balance change
-- [ ] `[Logic]` TanStack Query: add `accept`, `cancel`, `reject` mutations to `useTransactionMutations`
+- [x] `[Logic]` Prisma: add `CANCELED` and `REJECTED` to `TransactionStatus` enum; migration applied
+- [x] `[Logic]` Server Action: `acceptTransaction` — mark both records COMPLETE, increment receiver balance
+- [x] `[Logic]` Server Action: `cancelTransaction` — mark both records CANCELED; no balance change
+- [x] `[Logic]` Server Action: `rejectTransaction` — mark both records REJECTED; no balance change
+- [x] `[Logic]` TanStack Query: `accept`, `cancel`, `reject` mutations in `useTransactionMutations`
 
 ---
 

@@ -19,5 +19,10 @@ export const acceptTransactionSchema = z.object({
   categoryId: z.string().min(1, "Category is required"),
 });
 
+export const acceptTransactionActionSchema = acceptTransactionSchema.extend({
+  transactionId: z.string().uuid("Invalid transaction ID"),
+});
+
 export type TransactionFormType = z.infer<typeof transactionFormSchema>;
 export type AcceptTransactionFormType = z.infer<typeof acceptTransactionSchema>;
+export type AcceptTransactionActionType = z.infer<typeof acceptTransactionActionSchema>;

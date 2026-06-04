@@ -47,6 +47,7 @@ export function useTransactionMutations() {
         ...data,
         financialAccount: account,
         category: category,
+        createdAt: new Date(),
         ...(data.to && { status: TransactionStatus.PENDING }),
         ...(data.to && { type: TransactionType.EXPENSE }),
         amount: Number(data.amount),
@@ -139,20 +140,27 @@ export function useTransactionMutations() {
       const previousTransaction = context.client.getQueryData<Transaction[]>(
         transactionKeys.list(),
       );
-      // Optimistic transaction update
-      const optimisticTransaction = {
-        dataWithId,
-        category,
-        financialAccount,
-        status: TransactionStatus.COMPLETE,
-      };
-
       context.client.setQueryData<Transaction[]>(
         transactionKeys.list(),
         (old = []) =>
           old.map((o) =>
-            o.id === optimisticTransaction.dataWithId.transactionId
-              ? { ...o, ...optimisticTransaction }
+            o.id === dataWithId.transactionId
+              ? {
+                  ...o,
+                  status: TransactionStatus.COMPLETE,
+                  categoryId: dataWithId.categoryId,
+                  financialAccountId: dataWithId.financialAccountId,
+                  category: {
+                    id: dataWithId.categoryId,
+                    name: category.name,
+                    color: category.color,
+                  },
+                  financialAccount: {
+                    id: dataWithId.financialAccountId,
+                    name: financialAccount.name,
+                    type: financialAccount.type,
+                  },
+                }
               : o,
           ),
       );

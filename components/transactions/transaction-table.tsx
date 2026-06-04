@@ -44,6 +44,7 @@ export type Transaction = {
   type?: TransactionType;
   status?: TransactionStatus | null;
   date: string | Date;
+  createdAt?: string | Date | null;
   notes?: string | null;
   from?: string | null;
   to?: string | null;
@@ -113,6 +114,59 @@ export function TransactionTable({
     }
   }
 
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    if (!sortColumn) return 0;
+
+    let aVal: string | number | Date | null | undefined;
+    let bVal: string | number | Date | null | undefined;
+
+    switch (sortColumn) {
+      case "date":
+        aVal = new Date(a.date);
+        bVal = new Date(b.date);
+        break;
+      case "amount":
+        aVal = a.type === TransactionType.INCOME ? Number(a.amount) : -Number(a.amount);
+        bVal = b.type === TransactionType.INCOME ? Number(b.amount) : -Number(b.amount);
+        break;
+      case "type":
+        aVal = a.type;
+        bVal = b.type;
+        break;
+      case "category":
+        aVal = a.category?.name;
+        bVal = b.category?.name;
+        break;
+      case "account":
+        aVal = a.financialAccount?.name;
+        bVal = b.financialAccount?.name;
+        break;
+      case "from":
+        aVal = a.from;
+        bVal = b.from;
+        break;
+      case "to":
+        aVal = a.to;
+        bVal = b.to;
+        break;
+    }
+
+    if (aVal == null) return 1;
+    if (bVal == null) return -1;
+
+    const order =
+      typeof aVal === "string" && typeof bVal === "string"
+        ? aVal.localeCompare(bVal)
+        : (aVal as number) - (bVal as number);
+
+    if (order !== 0) return sortDirection === "asc" ? order : -order;
+
+    // tiebreak by createdAt so newer records appear first within same date
+    const aCreated = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const bCreated = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return bCreated - aCreated;
+  });
+
   return (
     <div className="rounded-xl border">
       <Table>
@@ -138,7 +192,7 @@ export function TransactionTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction) => (
+          {sortedTransactions.map((transaction) => (
             <TransactionRow
               key={transaction.id}
               transaction={transaction}

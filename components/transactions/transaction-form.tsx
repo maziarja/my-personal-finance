@@ -59,7 +59,7 @@ export function TransactionForm({
       to: defaultValues?.to ?? "",
       categoryId: defaultValues?.categoryId ?? "",
       financialAccountId: defaultValues?.financialAccountId ?? "",
-      date: defaultValues?.date ?? new Date().toISOString().split("T")[0],
+      date: defaultValues?.date ?? (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; })(),
       notes: defaultValues?.notes ?? "",
     },
   });
