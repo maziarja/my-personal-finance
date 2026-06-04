@@ -14,12 +14,13 @@ export function TransactionTableSkeleton() {
       <div className="flex justify-end">
         <Skeleton className="h-8 w-36 rounded-md" />
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Skeleton className="h-8 w-36 rounded-md" />
         <Skeleton className="h-8 w-36 rounded-md" />
         <Skeleton className="h-8 w-28 rounded-md" />
         <Skeleton className="h-8 w-36 rounded-md" />
         <Skeleton className="h-8 w-36 rounded-md" />
+        <Skeleton className="h-8 w-16 rounded-md" />
       </div>
       <div className="rounded-xl border">
         <Table>

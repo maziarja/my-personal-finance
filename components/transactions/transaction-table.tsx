@@ -6,7 +6,6 @@ import {
   ChevronDown,
   ChevronsUpDown,
   NotebookPen,
-  MinusIcon,
 } from "lucide-react";
 import {
   Tooltip,
@@ -235,15 +234,18 @@ function TransactionRow({
       <TableCell className="text-muted-foreground">{formattedDate}</TableCell>
       <TableCell>
         <div className="flex items-center gap-1.5">
-          <Badge
-            className={cn(
-              transaction.type === "INCOME"
-                ? "border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
-                : "border-red-200 bg-red-100 text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400",
+          {transaction.status !== TransactionStatus.CANCELED &&
+            transaction.status !== TransactionStatus.REJECTED && (
+              <Badge
+                className={cn(
+                  transaction.type === "INCOME"
+                    ? "border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
+                    : "border-red-200 bg-red-100 text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400",
+                )}
+              >
+                {transaction.type === "INCOME" ? "Income" : "Expense"}
+              </Badge>
             )}
-          >
-            {transaction.type === "INCOME" ? "Income" : "Expense"}
-          </Badge>
           {transaction.status === TransactionStatus.PENDING && (
             <Badge className="border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
               Pending
@@ -318,7 +320,7 @@ function TransactionRow({
             </TooltipProvider>
           </>
         ) : (
-          <MinusIcon className="text-muted-foreground ml-2" />
+          <span className="text-muted-foreground/50">—</span>
         )}
       </TableCell>
 
@@ -337,7 +339,7 @@ function TransactionRow({
             </TooltipProvider>
           </>
         ) : (
-          <MinusIcon className="text-muted-foreground" />
+          <span className="text-muted-foreground/50">—</span>
         )}
       </TableCell>
 

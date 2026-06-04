@@ -33,7 +33,7 @@ export function SignInForm() {
   }
 
   return (
-    <Card className="w-full max-w-sm border-t-2 border-t-brand/[0.4]">
+    <Card className="w-full max-w-sm border-t-2 border-t-brand/40">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Welcome back</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>

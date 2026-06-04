@@ -36,26 +36,26 @@ export function AppSidebar() {
       {/* ── Logo ── */}
       <SidebarHeader className="px-5 pt-6 pb-0">
         <Link href="/dashboard" className="group flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-brand/[0.2] bg-brand/[0.08] transition-all duration-200 group-hover:border-brand/[0.35] group-hover:bg-brand/[0.15]">
-            <TrendingUp className="h-[15px] w-[15px] text-brand" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-brand/20 bg-brand/8 transition-all duration-200 group-hover:border-brand/35 group-hover:bg-brand/15">
+            <TrendingUp className="size-3.75 text-brand" />
           </div>
           <div className="flex flex-col leading-none">
             <span className="text-[11px] font-bold tracking-[0.3em] text-sidebar-foreground uppercase">
               Finio
             </span>
-            <span className="mt-0.5 text-[8px] tracking-[0.2em] text-sidebar-foreground/[0.5] uppercase">
+            <span className="mt-0.5 text-[8px] tracking-[0.2em] text-sidebar-foreground/50 uppercase">
               Finance
             </span>
           </div>
         </Link>
 
         {/* Brand gradient rule */}
-        <div className="mt-5 h-px bg-gradient-to-r from-brand/[0.3] via-brand/[0.1] to-transparent" />
+        <div className="mt-5 h-px bg-gradient-to-r from-brand/30 via-brand/10 to-transparent" />
       </SidebarHeader>
 
       {/* ── Nav ── */}
       <SidebarContent className="px-3 pt-5 pb-2">
-        <p className="mb-2.5 px-3 text-[8.5px] font-semibold tracking-[0.22em] text-sidebar-foreground/[0.5] uppercase select-none">
+        <p className="mb-2.5 px-3 text-[8.5px] font-semibold tracking-[0.22em] text-sidebar-foreground/50 uppercase select-none">
           Navigate
         </p>
 
@@ -72,7 +72,7 @@ export function AppSidebar() {
                   "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200",
                   isActive
                     ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground/[0.6] hover:bg-sidebar-accent/[0.6] hover:text-sidebar-foreground/[0.85]"
+                    : "text-sidebar-foreground/60 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground/85"
                 )}
               >
                 {/* Left active indicator */}
@@ -88,13 +88,13 @@ export function AppSidebar() {
                 {/* Icon box */}
                 <div
                   className={cn(
-                    "flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-md border transition-all duration-200",
+                    "flex size-7.5 shrink-0 items-center justify-center rounded-md border transition-all duration-200",
                     isActive
-                      ? "border-brand/[0.2] bg-brand/[0.1] text-brand shadow-[0_0_14px_var(--brand-glow)]"
-                      : "border-sidebar-foreground/[0.08] bg-sidebar-foreground/[0.04] text-sidebar-foreground/[0.5] group-hover:border-sidebar-foreground/[0.12] group-hover:bg-sidebar-foreground/[0.07] group-hover:text-sidebar-foreground/[0.7]"
+                      ? "border-brand/20 bg-brand/10 text-brand shadow-[0_0_14px_var(--brand-glow)]"
+                      : "border-sidebar-foreground/8 bg-sidebar-foreground/4 text-sidebar-foreground/50 group-hover:border-sidebar-foreground/12 group-hover:bg-sidebar-foreground/7 group-hover:text-sidebar-foreground/70"
                   )}
                 >
-                  <Icon className="h-[14px] w-[14px]" />
+                  <Icon className="size-3.5" />
                 </div>
 
                 {/* Label */}
@@ -109,10 +109,10 @@ export function AppSidebar() {
 
       {/* ── Footer ── */}
       <SidebarFooter className="px-5 py-5">
-        <div className="mb-4 h-px bg-gradient-to-r from-sidebar-foreground/[0.08] to-transparent" />
+        <div className="mb-4 h-px bg-gradient-to-r from-sidebar-foreground/8 to-transparent" />
         <div className="flex items-center gap-2">
-          <span className="inline-block h-[5px] w-[5px] rounded-full bg-brand/50" />
-          <span className="text-[8.5px] tracking-[0.2em] text-sidebar-foreground/[0.5] uppercase select-none">
+          <span className="inline-block size-1.25 rounded-full bg-brand/50" />
+          <span className="text-[8.5px] tracking-[0.2em] text-sidebar-foreground/50 uppercase select-none">
             Personal Finance
           </span>
         </div>

@@ -66,7 +66,7 @@ export function FeatureCard({ icon, title, description }: FeatureCardProps) {
           className={cn(
             "relative mb-4 flex size-10 items-center justify-center rounded-xl border transition-all duration-300",
             tilt.active
-              ? "border-brand/[0.3] bg-brand/[0.1] text-brand shadow-[0_0_18px_var(--brand-glow)]"
+              ? "border-brand/30 bg-brand/10 text-brand shadow-[0_0_18px_var(--brand-glow)]"
               : "border-border bg-muted text-muted-foreground"
           )}
         >
@@ -75,7 +75,7 @@ export function FeatureCard({ icon, title, description }: FeatureCardProps) {
 
         {/* Text */}
         <h3 className="mb-2 text-sm font-semibold text-foreground">{title}</h3>
-        <p className="text-[0.8125rem] leading-relaxed text-muted-foreground">
+        <p className="text-[13px] leading-relaxed text-muted-foreground">
           {description}
         </p>
 

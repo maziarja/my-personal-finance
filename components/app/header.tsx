@@ -27,7 +27,7 @@ export function Header({ userName, userEmail }: HeaderProps) {
           {userEmail}
         </span>
         <ThemeToggle />
-        <Avatar size="sm" className="ring-1 ring-brand/[0.3] ring-offset-1 ring-offset-background">
+        <Avatar size="sm" className="ring-1 ring-brand/30 ring-offset-1 ring-offset-background">
           <AvatarFallback>{getInitials(userName)}</AvatarFallback>
         </Avatar>
         <SignOutButton />
