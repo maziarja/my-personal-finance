@@ -36,7 +36,7 @@ export function SignUpForm() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm border-t-2 border-t-brand/[0.4]">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Create an account</CardTitle>
         <CardDescription>Start tracking your finances today</CardDescription>

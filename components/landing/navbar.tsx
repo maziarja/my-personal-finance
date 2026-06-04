@@ -11,7 +11,7 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 font-semibold tracking-tight text-foreground"
         >
-          <TrendingUp className="size-5" aria-hidden="true" />
+          <TrendingUp className="size-5 text-brand" aria-hidden="true" />
           <span>Finio</span>
         </Link>
 

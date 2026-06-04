@@ -91,9 +91,9 @@ function SortIcon({
     return <ChevronsUpDown className="text-muted-foreground/50 size-3.5" />;
   }
   return direction === "asc" ? (
-    <ChevronUp className="size-3.5" />
+    <ChevronUp className="size-3.5 text-brand" />
   ) : (
-    <ChevronDown className="size-3.5" />
+    <ChevronDown className="size-3.5 text-brand" />
   );
 }
 

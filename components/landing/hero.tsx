@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export function Hero() {
   return (
     <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-32">
-      <div className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+      <div className="rounded-full border border-brand/[0.25] bg-brand/[0.06] px-3 py-1 text-xs font-medium text-brand">
         Personal finance, simplified
       </div>
 

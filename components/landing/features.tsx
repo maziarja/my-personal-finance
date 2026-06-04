@@ -1,11 +1,5 @@
 import { LayoutList, PiggyBank, Target, CreditCard } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { FeatureCard } from "@/components/landing/feature-card";
 
 const features = [
   {
@@ -48,20 +42,18 @@ export function Features() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map(({ icon: Icon, title, description }) => (
-            <Card key={title} className="gap-3 py-5">
-              <CardHeader className="pb-0">
-                <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-muted ring-1 ring-border">
-                  <Icon className="size-4 text-foreground" aria-hidden="true" />
-                </div>
-                <CardTitle className="text-sm font-semibold">{title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-[0.8125rem] leading-relaxed">
-                  {description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+          {features.map(({ icon: Icon, title, description }, index) => (
+            <div
+              key={title}
+              className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-700"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <FeatureCard
+                icon={<Icon className="size-5" aria-hidden="true" />}
+                title={title}
+                description={description}
+              />
+            </div>
           ))}
         </div>
       </div>

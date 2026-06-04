@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SignOutButton } from "@/components/app/sign-out-button";
+import { ThemeToggle } from "@/components/app/theme-toggle";
 
 function getInitials(name: string) {
   return name
@@ -25,7 +26,8 @@ export function Header({ userName, userEmail }: HeaderProps) {
         <span className="text-muted-foreground hidden text-sm sm:block">
           {userEmail}
         </span>
-        <Avatar size="sm">
+        <ThemeToggle />
+        <Avatar size="sm" className="ring-1 ring-brand/[0.3] ring-offset-1 ring-offset-background">
           <AvatarFallback>{getInitials(userName)}</AvatarFallback>
         </Avatar>
         <SignOutButton />
