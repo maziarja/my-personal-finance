@@ -41,6 +41,11 @@ export async function createAccount(formData: AccountFormType) {
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
   }
+
+  if (Number(parsed.data.balance) < 1) {
+    return { error: "Balance must be at least one dollar" };
+  }
+
   try {
     await prisma.financialAccount.create({
       data: {
@@ -72,6 +77,11 @@ export async function updateAccount(formData: UpdatedAccountFormType) {
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
   }
+
+  if (Number(parsed.data.balance) < 1) {
+    return { error: "Balance must be at least one dollar" };
+  }
+
   try {
     const { id, ...updateData } = parsed.data;
     await prisma.financialAccount.update({

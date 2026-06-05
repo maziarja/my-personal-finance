@@ -151,7 +151,7 @@ model Transaction {
 model Budget {
   id           String   @id @default(uuid())
   categoryId   String
-  category     Category @relation(fields: [categoryId], references: [id])
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   monthlyLimit Decimal
   month        DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)

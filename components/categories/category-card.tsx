@@ -29,7 +29,7 @@ export function CategoryCard({ category, className }: CategoryCardProps) {
             className="size-4 shrink-0 rounded-full"
             style={{ backgroundColor: category.color }}
           />
-          <p className="truncate font-medium">{category.name}</p>
+          <p className="truncate font-medium capitalize">{category.name}</p>
         </div>
         <div className="ml-2 flex shrink-0 items-center gap-1">
           <EditCategoryDialog category={category} />
