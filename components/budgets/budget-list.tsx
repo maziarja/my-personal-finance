@@ -45,7 +45,7 @@ export function BudgetList() {
   }
 
   if (budgets?.length === 0) {
-    return <BudgetsEmpty categories={categoryList} />;
+    return <BudgetsEmpty categories={categoryList} transactions={transactionList} />;
   }
 
   return (

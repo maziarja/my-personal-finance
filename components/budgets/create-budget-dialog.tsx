@@ -44,7 +44,11 @@ export function CreateBudgetDialog({
         (transaction) =>
           transaction.category?.id === category.id &&
           transaction.status === TransactionStatus.COMPLETE &&
-          transaction.type === TransactionType.EXPENSE,
+          transaction.type === TransactionType.EXPENSE &&
+          new Date(transaction.date).getUTCMonth() ===
+            new Date(data.month).getUTCMonth() &&
+          new Date(transaction.date).getUTCFullYear() ===
+            new Date(data.month).getUTCFullYear(),
       )
       .reduce((acc, cur) => acc + Number(cur.amount), 0);
 
