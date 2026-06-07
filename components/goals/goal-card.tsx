@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PlusCircle, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,6 @@ const formatCurrency = (amount: number) =>
     amount,
   );
 
-const LINE_LENGTH = 192;
-
 function GoalProgressBar({
   current,
   target,
@@ -35,21 +33,19 @@ function GoalProgressBar({
 }) {
   const percentage = target > 0 ? Math.min((current / target) * 100, 100) : 0;
   const isOver = current > target;
-  const fill = isOver ? "#ef4444" : "var(--brand)";
-  const targetOffset = LINE_LENGTH - (percentage / 100) * LINE_LENGTH;
 
-  const [offset, setOffset] = useState(LINE_LENGTH);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     let raf2: number;
     const raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => setOffset(targetOffset));
+      raf2 = requestAnimationFrame(() => setWidth(percentage));
     });
     return () => {
       cancelAnimationFrame(raf1);
       cancelAnimationFrame(raf2);
     };
-  }, [targetOffset]);
+  }, [percentage]);
 
   return (
     <div className="flex w-full flex-col gap-1.5">
@@ -66,34 +62,15 @@ function GoalProgressBar({
           <span className="text-destructive text-xs font-medium">Over goal</span>
         )}
       </div>
-      <svg
-        width="100%"
-        height="8"
-        viewBox="0 0 200 8"
-        preserveAspectRatio="none"
-      >
-        <line
-          x1={4}
-          y1={4}
-          x2={196}
-          y2={4}
-          stroke="#e5e7eb"
-          strokeWidth={8}
-          strokeLinecap="round"
+      <div className="bg-muted relative h-2 w-full overflow-hidden rounded-full">
+        <div
+          className={cn(
+            "absolute inset-y-0 left-0 rounded-full transition-[width] duration-1000 ease-in-out",
+            isOver ? "bg-destructive" : "bg-brand",
+          )}
+          style={{ width: `${width}%` }}
         />
-        <line
-          x1={4}
-          y1={4}
-          x2={196}
-          y2={4}
-          stroke={fill}
-          strokeWidth={8}
-          strokeLinecap="round"
-          strokeDasharray={LINE_LENGTH}
-          strokeDashoffset={offset}
-          style={{ transition: "stroke-dashoffset 1s ease-in-out" }}
-        />
-      </svg>
+      </div>
     </div>
   );
 }

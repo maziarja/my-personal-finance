@@ -24,8 +24,8 @@ export function EditGoalDialog({ goal }: EditGoalDialogProps) {
   const [open, setOpen] = useState(false);
   const { update } = useGoalMutations();
 
-  function handleSubmit(data: GoalFormType) {
-    update({ ...data, id: goal.id });
+  async function handleSubmit(data: GoalFormType) {
+    update({ ...data, id: goal.id, currentAmount: goal.currentAmount });
     setOpen(false);
   }
 
@@ -59,7 +59,9 @@ export function EditGoalDialog({ goal }: EditGoalDialogProps) {
             onSubmit={handleSubmit}
           />
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button type="submit" form="edit-goal-form">
               Save changes
             </Button>

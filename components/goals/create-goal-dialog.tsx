@@ -14,16 +14,14 @@ import {
 import { GoalForm } from "@/components/goals/goal-form";
 import { type GoalFormType } from "@/lib/schemas/goalSchema";
 import { useGoalMutations } from "@/hooks/useGoalMutations";
-import { createGoal } from "@/app/_actions/goalActions";
 
 export function CreateGoalDialog() {
   const [open, setOpen] = useState(false);
   const { create } = useGoalMutations();
 
-  async function handleSubmit(data: GoalFormType) {
-    // create(data);
+  function handleSubmit(data: GoalFormType) {
+    create(data);
     setOpen(false);
-    await createGoal(data);
   }
 
   return (

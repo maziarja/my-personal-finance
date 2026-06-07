@@ -22,7 +22,9 @@ export function useCategoryMutations() {
       // Cancel querying
       await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot prev cat
-      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
+      const previousCategories = context.client.getQueryData<Category[]>(
+        categoryKey.list(),
+      );
       // Set optimistic cat
       const optimisticCategory: Category = {
         id: crypto.randomUUID(),
@@ -63,7 +65,9 @@ export function useCategoryMutations() {
       // Cancel Querying
       await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot previous cat
-      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
+      const previousCategories = context.client.getQueryData<Category[]>(
+        categoryKey.list(),
+      );
       // Set optimistic cat
       context.client.setQueryData<Category[]>(categoryKey.list(), (old = []) =>
         old
@@ -105,7 +109,9 @@ export function useCategoryMutations() {
       // Cancel querying
       await context.client.cancelQueries({ queryKey: categoryKey.all() });
       // Snapshot previous cat
-      const previousCategories = context.client.getQueryData<Category[]>(categoryKey.list());
+      const previousCategories = context.client.getQueryData<Category[]>(
+        categoryKey.list(),
+      );
       // Set optimistic cat
       context.client.setQueryData<Category[]>(categoryKey.list(), (old = []) =>
         old.filter((o) => o.id !== newId),

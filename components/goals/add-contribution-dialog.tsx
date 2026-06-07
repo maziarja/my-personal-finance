@@ -15,12 +15,18 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { goalContributionSchema, type GoalContributionType } from "@/lib/schemas/goalSchema";
+import {
+  ContributionType,
+  goalContributionSchema,
+  type GoalContributionType,
+} from "@/lib/schemas/goalSchema";
 import { useGoalMutations } from "@/hooks/useGoalMutations";
 import { GoalPreviewBar } from "@/components/goals/goal-preview-bar";
 
 const fmt = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    n,
+  );
 
 type AddContributionDialogProps = {
   goalId: string;
@@ -30,7 +36,7 @@ type AddContributionDialogProps = {
 };
 
 export function AddContributionDialog({
-  goalId,
+  goalId: id,
   goalName,
   currentAmount,
   targetAmount,
@@ -46,8 +52,12 @@ export function AddContributionDialog({
   const rawAmount = useWatch({ control: form.control, name: "amount" });
   const delta = Math.max(parseFloat(rawAmount) || 0, 0);
 
-  function handleSubmit(data: GoalContributionType) {
-    contribute({ goalId, amount: data.amount });
+  async function handleSubmit(data: GoalContributionType) {
+    const dataWithId = {
+      id,
+      amount: data.amount,
+    };
+    contribute({ data: dataWithId, type: ContributionType.Add });
     setOpen(false);
   }
 
@@ -92,8 +102,13 @@ export function AddContributionDialog({
               control={form.control}
               name="amount"
               render={({ field, fieldState }) => (
-                <Field.Root invalid={!!fieldState.error} className="flex flex-col gap-1.5">
-                  <Field.Label className="text-sm font-medium">Amount</Field.Label>
+                <Field.Root
+                  invalid={!!fieldState.error}
+                  className="flex flex-col gap-1.5"
+                >
+                  <Field.Label className="text-sm font-medium">
+                    Amount
+                  </Field.Label>
                   <Input
                     type="number"
                     min="0.01"
@@ -103,7 +118,9 @@ export function AddContributionDialog({
                     {...field}
                   />
                   {fieldState.error && (
-                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
+                    <p className="text-destructive text-sm">
+                      {fieldState.error.message}
+                    </p>
                   )}
                 </Field.Root>
               )}
@@ -111,7 +128,9 @@ export function AddContributionDialog({
           </form>
 
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
             <Button type="submit" form="add-contribution-form">
               {delta > 0 ? `Add ${fmt(delta)}` : "Add"}
             </Button>

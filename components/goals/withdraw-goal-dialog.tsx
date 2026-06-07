@@ -15,12 +15,18 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { goalContributionSchema, type GoalContributionType } from "@/lib/schemas/goalSchema";
+import {
+  ContributionType,
+  goalContributionSchema,
+  type GoalContributionType,
+} from "@/lib/schemas/goalSchema";
 import { useGoalMutations } from "@/hooks/useGoalMutations";
 import { GoalPreviewBar } from "@/components/goals/goal-preview-bar";
 
 const fmt = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    n,
+  );
 
 type WithdrawGoalDialogProps = {
   goalId: string;
@@ -30,13 +36,13 @@ type WithdrawGoalDialogProps = {
 };
 
 export function WithdrawGoalDialog({
-  goalId,
+  goalId: id,
   goalName,
   currentAmount,
   targetAmount,
 }: WithdrawGoalDialogProps) {
   const [open, setOpen] = useState(false);
-  const { withdraw } = useGoalMutations();
+  const { contribute } = useGoalMutations();
 
   const form = useForm<GoalContributionType>({
     resolver: zodResolver(goalContributionSchema),
@@ -44,14 +50,20 @@ export function WithdrawGoalDialog({
   });
 
   const rawAmount = useWatch({ control: form.control, name: "amount" });
-  const delta = -(Math.max(parseFloat(rawAmount) || 0, 0));
+  const delta = -Math.max(parseFloat(rawAmount) || 0, 0);
 
-  function handleSubmit(data: GoalContributionType) {
+  async function handleSubmit(data: GoalContributionType) {
     if (parseFloat(data.amount) > currentAmount) {
       form.setError("amount", { message: "Cannot exceed current balance" });
       return;
     }
-    withdraw({ goalId, amount: data.amount });
+
+    const dataWithId = {
+      id,
+      amount: data.amount,
+    };
+
+    contribute({ data: dataWithId, type: ContributionType.Withdraw });
     setOpen(false);
   }
 
@@ -97,7 +109,10 @@ export function WithdrawGoalDialog({
               control={form.control}
               name="amount"
               render={({ field, fieldState }) => (
-                <Field.Root invalid={!!fieldState.error} className="flex flex-col gap-1.5">
+                <Field.Root
+                  invalid={!!fieldState.error}
+                  className="flex flex-col gap-1.5"
+                >
                   <Field.Label className="text-sm font-medium">
                     Amount{" "}
                     <span className="text-muted-foreground text-xs font-normal">
@@ -107,14 +122,15 @@ export function WithdrawGoalDialog({
                   <Input
                     type="number"
                     min="0.01"
-                    max={currentAmount}
                     step="0.01"
                     placeholder="0.00"
                     autoFocus
                     {...field}
                   />
                   {fieldState.error && (
-                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
+                    <p className="text-destructive text-sm">
+                      {fieldState.error.message}
+                    </p>
                   )}
                 </Field.Root>
               )}
@@ -122,8 +138,14 @@ export function WithdrawGoalDialog({
           </form>
 
           <DialogFooter>
-            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
-            <Button type="submit" form="withdraw-goal-form" variant="destructive">
+            <DialogClose render={<Button variant="ghost" />}>
+              Cancel
+            </DialogClose>
+            <Button
+              type="submit"
+              form="withdraw-goal-form"
+              variant="destructive"
+            >
               {delta < 0 ? `Withdraw ${fmt(-delta)}` : "Withdraw"}
             </Button>
           </DialogFooter>

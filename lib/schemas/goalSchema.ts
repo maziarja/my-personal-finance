@@ -35,6 +35,18 @@ export const goalContributionSchema = z.object({
     ),
 });
 
+export const goalContributionActionSchema = goalContributionSchema.extend({
+  id: z.string(),
+});
+
+export enum ContributionType {
+  Withdraw,
+  Add,
+}
+
 export type GoalFormType = z.infer<typeof goalFormSchema>;
 export type UpdatedGoalFormType = z.infer<typeof updatedGoalFormSchema>;
 export type GoalContributionType = z.infer<typeof goalContributionSchema>;
+export type GoalContributionActionType = z.infer<
+  typeof goalContributionActionSchema
+>;
