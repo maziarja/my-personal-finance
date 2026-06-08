@@ -50,7 +50,7 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
   }
 
   return (
-    <div className="rounded-xl border">
+    <div className="overflow-x-auto rounded-xl border">
       <Table>
         <TableHeader>
           <TableRow>

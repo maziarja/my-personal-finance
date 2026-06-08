@@ -22,7 +22,7 @@ export function TransactionTableSkeleton() {
         <Skeleton className="h-8 w-36 rounded-md" />
         <Skeleton className="h-8 w-16 rounded-md" />
       </div>
-      <div className="rounded-xl border">
+      <div className="overflow-x-auto rounded-xl border">
         <Table>
           <TableHeader>
             <TableRow>

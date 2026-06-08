@@ -16,6 +16,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ const navItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   return (
     <Sidebar>
@@ -68,6 +70,7 @@ export function AppSidebar() {
               <Link
                 key={href}
                 href={href}
+                onClick={() => { if (isMobile) setOpenMobile(false); }}
                 className={cn(
                   "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200",
                   isActive

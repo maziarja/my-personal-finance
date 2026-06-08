@@ -1,4 +1,4 @@
-import { LayoutList, PiggyBank, Target, CreditCard } from "lucide-react";
+import { LayoutList, PiggyBank, Target, CreditCard, Send } from "lucide-react";
 import { FeatureCard } from "@/components/landing/feature-card";
 
 const features = [
@@ -7,6 +7,12 @@ const features = [
     title: "Transactions",
     description:
       "Log every expense and income in one place. Categorize, filter, and search across all your financial activity.",
+  },
+  {
+    icon: Send,
+    title: "P2P Transfers",
+    description:
+      "Send money to other users by email. Recipients accept or decline — balances only update on acceptance.",
   },
   {
     icon: PiggyBank,
@@ -30,18 +36,18 @@ const features = [
 
 export function Features() {
   return (
-    <section className="border-t border-border bg-muted/30">
+    <section className="border-border bg-muted/30 border-t">
       <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6">
         <div className="mb-12 text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
             Everything you need
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Built around the four pillars of personal finance.
+          <p className="text-muted-foreground mt-2 text-sm">
+            Everything you need to take control of your finances.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {features.map(({ icon: Icon, title, description }, index) => (
             <div
               key={title}
