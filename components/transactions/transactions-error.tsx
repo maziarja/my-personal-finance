@@ -4,7 +4,7 @@ import { ServerCrash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type TransactionsErrorProps = {
-  onRetry: () => void;
+  onRetry?: () => void;
 };
 
 export function TransactionsError({ onRetry }: TransactionsErrorProps) {
@@ -19,9 +19,11 @@ export function TransactionsError({ onRetry }: TransactionsErrorProps) {
           We couldn&apos;t load your transactions. Please try again.
         </p>
       </div>
-      <Button variant="outline" size="sm" onClick={onRetry}>
-        Try again
-      </Button>
+      {onRetry && (
+        <Button variant="outline" size="sm" onClick={onRetry}>
+          Try again
+        </Button>
+      )}
     </div>
   );
 }

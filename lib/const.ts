@@ -1,1 +1,2 @@
 export const MINIMUM_TRANSACTION_AMOUNT = 1;
+export const RECENT_TRANSACTION_NUM = 4;

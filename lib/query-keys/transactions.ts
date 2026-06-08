@@ -11,5 +11,6 @@ type TransactionFilters = {
 export const transactionKeys = {
   all: () => ["transactions"] as const,
   list: (filters: TransactionFilters = {}) =>
-    ["transactions", filters] as const,
+    ["transactions", "list", filters] as const,
+  recent: (limit: number) => ["transactions", "recent", limit] as const,
 };

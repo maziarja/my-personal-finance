@@ -2,7 +2,7 @@ import { ServerCrash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type AccountsErrorProps = {
-  onRetry: () => void;
+  onRetry?: () => void;
 };
 
 export function AccountsError({ onRetry }: AccountsErrorProps) {
@@ -14,12 +14,14 @@ export function AccountsError({ onRetry }: AccountsErrorProps) {
       <div>
         <p className="font-medium">Something went wrong</p>
         <p className="text-muted-foreground text-sm">
-          We couldn't load your accounts. Please try again.
+          We couldn&apos;t load your accounts. Please try again.
         </p>
       </div>
-      <Button variant="outline" size="sm" onClick={onRetry}>
-        Try again
-      </Button>
+      {onRetry && (
+        <Button variant="outline" size="sm" onClick={onRetry}>
+          Try again
+        </Button>
+      )}
     </div>
   );
 }

@@ -26,20 +26,43 @@ export async function getBudgets(): Promise<BudgetRow[] | { error: string }> {
   if (!session || !session.user) throw new Error("Unauthorized");
 
   try {
-    const [budgets, transactions] = await Promise.all([
-      prisma.budget.findMany({
-        where: { userId: session.user.id },
-        include: { category: true },
-        orderBy: [{ month: "desc" }, { category: { name: "asc" } }],
-      }),
-      prisma.transaction.findMany({
-        where: {
-          userId: session.user.id,
-          status: TransactionStatus.COMPLETE,
-          type: TransactionType.EXPENSE,
-        },
-      }),
-    ]);
+    const budgets = await prisma.budget.findMany({
+      where: { userId: session.user.id },
+      include: { category: true },
+      orderBy: [{ month: "desc" }, { category: { name: "asc" } }],
+    });
+
+    if (budgets.length === 0) return [];
+
+    const months = budgets.map((b) => b.month);
+    const startDate = new Date(
+      Date.UTC(
+        Math.min(...months.map((m) => m.getUTCFullYear())),
+        Math.min(...months.map((m) => m.getUTCMonth())),
+        1,
+      ),
+    );
+    const endDate = new Date(
+      Date.UTC(
+        Math.max(...months.map((m) => m.getUTCFullYear())),
+        Math.max(...months.map((m) => m.getUTCMonth())) + 1,
+        0,
+        23,
+        59,
+        59,
+        999,
+      ),
+    );
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: session.user.id,
+        status: TransactionStatus.COMPLETE,
+        type: TransactionType.EXPENSE,
+        date: { gte: startDate, lte: endDate },
+      },
+      select: { categoryId: true, amount: true, date: true },
+    });
 
     return budgets.map((b) => {
       const filteredTransaction = transactions.filter((tran) => {

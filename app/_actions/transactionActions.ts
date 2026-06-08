@@ -20,7 +20,10 @@ type ActiveFilters = {
   to?: string;
 };
 
-export async function getTransactions(activeFilters: ActiveFilters) {
+export async function getTransactions(
+  activeFilters: ActiveFilters,
+  take?: number,
+) {
   const session = await getSession();
   if (!session || !session.user) {
     throw new Error("Unauthorized");
@@ -45,6 +48,7 @@ export async function getTransactions(activeFilters: ActiveFilters) {
         financialAccount: { select: { name: true, type: true, id: true } },
         category: { select: { id: true, color: true, name: true } },
       },
+      take: take,
     });
 
     return transactions.map((trans) => ({
