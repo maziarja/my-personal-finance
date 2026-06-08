@@ -11,8 +11,8 @@ type BudgetsEmptyProps = {
 export function BudgetsEmpty({ categories, transactions }: BudgetsEmptyProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed py-16 text-center">
-      <div className="bg-muted flex size-12 items-center justify-center rounded-full">
-        <PiggyBank className="text-muted-foreground size-6" />
+      <div className="bg-brand/8 border border-brand/15 flex size-12 items-center justify-center rounded-full">
+        <PiggyBank className="text-brand size-5" />
       </div>
       <div>
         <p className="font-medium">No budgets yet</p>

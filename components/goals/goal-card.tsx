@@ -65,10 +65,10 @@ function GoalProgressBar({
       <div className="bg-muted relative h-2 w-full overflow-hidden rounded-full">
         <div
           className={cn(
-            "absolute inset-y-0 left-0 rounded-full transition-[width] duration-1000 ease-in-out",
+            "absolute inset-y-0 left-0 rounded-full",
             isOver ? "bg-destructive" : "bg-brand",
           )}
-          style={{ width: `${width}%` }}
+          style={{ width: `${width}%`, transition: "width 0.7s cubic-bezier(0.23, 1, 0.32, 1)" }}
         />
       </div>
     </div>

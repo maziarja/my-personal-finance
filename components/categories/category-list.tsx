@@ -36,8 +36,14 @@ export function CategoryList() {
         <CreateCategoryDialog />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {categories?.map((category) => (
-          <CategoryCard key={category.id} category={category} />
+        {categories?.map((category, index) => (
+          <div
+            key={category.id}
+            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+            style={{ animationDuration: "280ms", animationDelay: `${index * 40}ms` }}
+          >
+            <CategoryCard category={category} />
+          </div>
         ))}
       </div>
     </div>

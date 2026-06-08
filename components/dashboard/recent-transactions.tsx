@@ -27,8 +27,8 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
   if (transactions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed py-10 text-center">
-        <div className="bg-muted flex size-12 items-center justify-center rounded-full">
-          <ReceiptText className="text-muted-foreground size-6" />
+        <div className="bg-brand/8 border border-brand/15 flex size-12 items-center justify-center rounded-full">
+          <ReceiptText className="text-brand size-5" />
         </div>
         <div>
           <p className="font-medium">No transactions yet</p>

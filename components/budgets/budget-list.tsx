@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 import { BudgetCard } from "@/components/budgets/budget-card";
 import { BudgetsEmpty } from "@/components/budgets/budgets-empty";
 import { BudgetsError } from "@/components/budgets/budgets-error";
@@ -58,12 +59,16 @@ export function BudgetList() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {budgets?.map((budget, index) => (
-          <BudgetCard
+          <div
             key={budget.id}
-            budget={budget}
-            categories={categoryList}
-            className={getCardSpan(index, budgets.length)}
-          />
+            className={cn(
+              getCardSpan(index, budgets.length),
+              "animate-in fade-in slide-in-from-bottom-2 fill-mode-both",
+            )}
+            style={{ animationDuration: "280ms", animationDelay: `${index * 40}ms` }}
+          >
+            <BudgetCard budget={budget} categories={categoryList} />
+          </div>
         ))}
       </div>
     </div>

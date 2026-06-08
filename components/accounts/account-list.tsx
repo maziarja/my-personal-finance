@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/app/_actions/accountActions";
 import { accountKey } from "@/lib/query-keys/accounts";
 import { AccountListSkeleton } from "@/components/accounts/account-list-skeleton";
+import { cn } from "@/lib/utils";
 
 export function AccountList() {
   const {
@@ -38,11 +39,16 @@ export function AccountList() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {accounts?.map((account, index) => (
-          <AccountCard
+          <div
             key={account.id}
-            account={account}
-            className={getCardSpan(index, accounts.length)}
-          />
+            className={cn(
+              getCardSpan(index, accounts.length),
+              "animate-in fade-in slide-in-from-bottom-2 fill-mode-both",
+            )}
+            style={{ animationDuration: "280ms", animationDelay: `${index * 40}ms` }}
+          >
+            <AccountCard account={account} />
+          </div>
         ))}
       </div>
     </div>

@@ -69,7 +69,7 @@ export function DashboardSkeleton() {
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <Skeleton className="h-3 w-16 rounded" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <AccountCardSkeleton key={i} />
           ))}

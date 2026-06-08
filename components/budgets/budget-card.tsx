@@ -74,7 +74,7 @@ function BudgetProgressRing({
           cy={60}
           r={radius}
           fill="none"
-          stroke="#e5e7eb"
+          style={{ stroke: "var(--border)" }}
           strokeWidth={12}
         />
         <circle
@@ -87,7 +87,7 @@ function BudgetProgressRing({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1s ease-in-out" }}
+          style={{ transition: "stroke-dashoffset 0.7s cubic-bezier(0.23, 1, 0.32, 1)" }}
         />
       </svg>
       <div className="absolute flex flex-col items-center leading-tight">

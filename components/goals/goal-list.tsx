@@ -39,8 +39,14 @@ export function GoalList() {
         <CreateGoalDialog />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {goals.map((goal) => (
-          <GoalCard key={goal.id} goal={goal} />
+        {goals.map((goal, index) => (
+          <div
+            key={goal.id}
+            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+            style={{ animationDuration: "280ms", animationDelay: `${index * 40}ms` }}
+          >
+            <GoalCard goal={goal} />
+          </div>
         ))}
       </div>
     </div>
