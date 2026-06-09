@@ -146,6 +146,8 @@ model Transaction {
   userId   String
 
   @@index([userId])
+  @@index([userId, date])
+  @@index([transferId])
 }
 
 model Budget {

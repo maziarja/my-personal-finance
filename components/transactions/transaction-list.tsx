@@ -14,6 +14,7 @@ import { transactionKeys } from "@/lib/query-keys/transactions";
 import { accountKey } from "@/lib/query-keys/accounts";
 import { categoryKey } from "@/lib/query-keys/categories";
 import { TransactionTableSkeleton } from "@/components/transactions/transaction-table-skeleton";
+import { useMemo } from "react";
 
 export function TransactionList() {
   const accountId = useTransactionFiltersStore((state) => state.accountId);
@@ -22,20 +23,17 @@ export function TransactionList() {
   const from = useTransactionFiltersStore((state) => state.from);
   const to = useTransactionFiltersStore((state) => state.to);
 
-  const transactionFilters = {
-    accountId,
-    categoryId,
-    type,
-    from,
-    to,
-  };
-
-  const activeFilters = Object.fromEntries(
-    Object.entries(transactionFilters).filter(
-      ([_, v]) => v !== null && v !== "",
-    ),
+  const activeFilters = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries({ accountId, categoryId, type, from, to }).filter(
+          ([_, v]) => v !== null && v !== undefined && v !== "",
+        ),
+      ),
+    [accountId, categoryId, type, from, to],
   );
-  const hasActiveFilters = Object.entries(activeFilters).length > 0;
+
+  const hasActiveFilters = Object.keys(activeFilters).length > 0;
 
   const {
     data: transactions,
