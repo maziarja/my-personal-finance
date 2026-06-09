@@ -5,7 +5,7 @@ import {
   deleteAccount,
   updateAccount,
 } from "@/app/_actions/accountActions";
-import { Account } from "@/components/accounts/account-card";
+import { Account } from "@/lib/types/account";
 import {
   AccountFormType,
   UpdatedAccountFormType,

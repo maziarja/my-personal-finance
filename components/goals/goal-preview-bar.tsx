@@ -1,10 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    n,
-  );
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const fmt = (n: number) => currencyFormatter.format(n);
 
 type GoalPreviewBarProps = {
   current: number;

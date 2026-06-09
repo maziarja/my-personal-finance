@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TrendingUp } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/variants/button";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {

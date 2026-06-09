@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/variants/button";
 import { cn } from "@/lib/utils";
 
 export function Hero() {

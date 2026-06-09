@@ -5,7 +5,7 @@ import {
   type Budget,
   type BudgetCategory,
 } from "@/components/budgets/budget-card";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/variants/button";
 import { cn } from "@/lib/utils";
 import { BudgetsError } from "../budgets/budgets-error";
 

@@ -12,12 +12,8 @@ import { cn } from "@/lib/utils";
 import { EditAccountDialog } from "@/components/accounts/edit-account-dialog";
 import { DeleteAccountDialog } from "@/components/accounts/delete-account-dialog";
 
-export type Account = {
-  id: string;
-  name: string;
-  type: "CHECKING" | "SAVING" | "CREDIT_CARD" | "CASH";
-  balance: number;
-};
+import type { Account } from "@/lib/types/account";
+export type { Account };
 
 const TYPE_CONFIG: Record<
   Account["type"],
@@ -59,10 +55,11 @@ const TYPE_CONFIG: Record<
   },
 };
 
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const formatCurrency = (amount: number) => currencyFormatter.format(amount);
 
 type AccountCardProps = {
   account: Account;

@@ -86,14 +86,8 @@ export function CategoryForm({
         control={form.control}
         name="color"
         render={({ field, fieldState }) => (
-          <div
-            role="group"
-            aria-labelledby="color-label"
-            className="flex flex-col gap-1.5"
-          >
-            <span id="color-label" className="text-sm font-medium">
-              Color
-            </span>
+          <fieldset className="flex flex-col gap-1.5 border-0 m-0 p-0">
+            <legend className="text-sm font-medium mb-1.5">Color</legend>
             <div className="flex flex-wrap gap-2">
               {CATEGORY_COLORS.map((color) => (
                 <button
@@ -117,7 +111,7 @@ export function CategoryForm({
                 {fieldState.error.message}
               </p>
             )}
-          </div>
+          </fieldset>
         )}
       />
 

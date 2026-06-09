@@ -22,10 +22,11 @@ export type BudgetCategory = {
   color: string;
 };
 
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const formatCurrency = (amount: number) => currencyFormatter.format(amount);
 
 const formatMonth = (month: string) =>
   new Date(month.slice(0, 7) + "-01T12:00:00Z").toLocaleDateString("en-US", {

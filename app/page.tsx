@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { getSession } from "@/lib/helpers/getSession";
+
+export const metadata: Metadata = {
+  title: "Finio — Personal Finance Tracker",
+  description: "Track your spending, budgets, and savings goals in one place.",
+};
 import { redirect } from "next/navigation";
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";

@@ -20,7 +20,7 @@ export const acceptTransactionSchema = z.object({
 });
 
 export const acceptTransactionActionSchema = acceptTransactionSchema.extend({
-  transactionId: z.string().uuid("Invalid transaction ID"),
+  transactionId: z.uuid("Invalid transaction ID"),
 });
 
 export type TransactionFormType = z.infer<typeof transactionFormSchema>;

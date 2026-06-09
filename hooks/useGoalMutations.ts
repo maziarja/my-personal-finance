@@ -4,7 +4,7 @@ import {
   deleteGoal,
   updateGoal,
 } from "@/app/_actions/goalActions";
-import { Goal } from "@/components/goals/goal-card";
+import { Goal } from "@/lib/types/goal";
 import { goalKey } from "@/lib/query-keys/goals";
 import {
   ContributionType,

@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/variants/button";
 import { cn } from "@/lib/utils";
 import type { Transaction } from "@/components/transactions/transaction-table";
 import { TransactionStatus } from "@/app/generated/prisma/enums";

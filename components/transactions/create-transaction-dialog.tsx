@@ -65,7 +65,7 @@ export function CreateTransactionDialog({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger
-            render={<span tabIndex={0} className="inline-flex" />}
+            render={<span className="inline-flex" />}
           >
             <Button size="sm" disabled>
               <Plus className="size-4" />

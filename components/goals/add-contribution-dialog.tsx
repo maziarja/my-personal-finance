@@ -23,10 +23,11 @@ import {
 import { useGoalMutations } from "@/hooks/useGoalMutations";
 import { GoalPreviewBar } from "@/components/goals/goal-preview-bar";
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    n,
-  );
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const fmt = (n: number) => currencyFormatter.format(n);
 
 type AddContributionDialogProps = {
   goalId: string;

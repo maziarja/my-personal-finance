@@ -5,7 +5,7 @@ import {
   deleteCategory,
   updateCategory,
 } from "@/app/_actions/categoryActions";
-import { Category } from "@/components/categories/category-card";
+import { Category } from "@/lib/types/category";
 import {
   CategoryFormType,
   UpdatedCategoryFormType,

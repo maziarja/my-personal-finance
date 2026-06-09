@@ -3,7 +3,12 @@
 import { AccountsSummary } from "@/components/dashboard/accounts-summary";
 import { BudgetProgressSection } from "@/components/dashboard/budget-progress-section";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
-import { SpendingChart } from "@/components/dashboard/spending-chart";
+import dynamic from "next/dynamic";
+
+const SpendingChart = dynamic(
+  () => import("@/components/dashboard/spending-chart").then((m) => m.SpendingChart),
+  { ssr: false },
+);
 import {
   Card,
   CardContent,

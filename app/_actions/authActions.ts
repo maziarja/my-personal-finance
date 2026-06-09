@@ -59,8 +59,9 @@ export const signUp = async (formData: SignUpType) => {
 };
 
 export async function signOut() {
-  await auth.api.signOut({
-    headers: await headers(),
-  });
+  const h = await headers();
+  const session = await auth.api.getSession({ headers: h });
+  if (!session) redirect("/");
+  await auth.api.signOut({ headers: h });
   redirect("/");
 }

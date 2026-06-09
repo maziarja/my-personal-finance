@@ -11,18 +11,14 @@ import { WithdrawGoalDialog } from "@/components/goals/withdraw-goal-dialog";
 import { EditGoalDialog } from "@/components/goals/edit-goal-dialog";
 import { DeleteGoalDialog } from "@/components/goals/delete-goal-dialog";
 
-export type Goal = {
-  id: string;
-  name: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: string | null;
-};
+import type { Goal } from "@/lib/types/goal";
+export type { Goal };
 
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const formatCurrency = (amount: number) => currencyFormatter.format(amount);
 
 function GoalProgressBar({
   current,
@@ -68,7 +64,7 @@ function GoalProgressBar({
             "absolute inset-y-0 left-0 rounded-full",
             isOver ? "bg-destructive" : "bg-brand",
           )}
-          style={{ width: `${width}%`, transition: "width 0.7s cubic-bezier(0.23, 1, 0.32, 1)" }}
+          style={{ width: "100%", transform: `scaleX(${width / 100})`, transformOrigin: "left center", transition: "transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)" }}
         />
       </div>
     </div>

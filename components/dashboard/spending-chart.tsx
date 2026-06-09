@@ -23,12 +23,12 @@ type SpendingChartProps = {
   data: SpendingDataPoint[] | undefined;
 };
 
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+const formatCurrency = (value: number) => currencyFormatter.format(value);
 
 function CustomTooltip({
   active,
@@ -44,7 +44,7 @@ function CustomTooltip({
     <div className="bg-background min-w-40 rounded-lg border p-3 text-sm shadow-sm">
       <p className="mb-2 font-medium">{String(label ?? "")}</p>
       {payload.map((entry, i) => (
-        <div key={i} className="flex items-center gap-2 py-0.5">
+        <div key={String(entry.name ?? i)} className="flex items-center gap-2 py-0.5">
           <span
             className="size-2.5 shrink-0 rounded-sm"
             style={{ backgroundColor: (entry.color as string) ?? "#888" }}

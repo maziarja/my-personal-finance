@@ -4,11 +4,8 @@ import { Card } from "@/components/ui/card";
 import { EditCategoryDialog } from "@/components/categories/edit-category-dialog";
 import { DeleteCategoryDialog } from "@/components/categories/delete-category-dialog";
 
-export type Category = {
-  id: string;
-  name: string;
-  color: string;
-};
+import type { Category } from "@/lib/types/category";
+export type { Category };
 
 type CategoryCardProps = {
   category: Category;

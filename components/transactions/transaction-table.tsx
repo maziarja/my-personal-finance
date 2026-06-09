@@ -37,19 +37,8 @@ import {
   TransactionType,
 } from "@/app/generated/prisma/enums";
 
-export type Transaction = {
-  id: string;
-  amount: string | number;
-  type?: TransactionType;
-  status?: TransactionStatus | null;
-  date: string | Date;
-  createdAt?: string | Date | null;
-  notes?: string | null;
-  from?: string | null;
-  to?: string | null;
-  category?: { id: string; name: string; color: string } | null;
-  financialAccount?: { id: string; name: string; type: AccountType } | null;
-};
+import type { Transaction } from "@/lib/types/transaction";
+export type { Transaction };
 
 type SortColumn =
   | "date"
@@ -113,7 +102,7 @@ export function TransactionTable({
     }
   }
 
-  const sortedTransactions = [...transactions].sort((a, b) => {
+  const sortedTransactions = transactions.toSorted((a, b) => {
     if (!sortColumn) return 0;
 
     let aVal: string | number | Date | null | undefined;
@@ -280,7 +269,7 @@ function TransactionRow({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
-                  render={<span className="inline-flex" tabIndex={0} />}
+                  render={<button type="button" aria-label="View note" className="inline-flex cursor-default" />}
                 >
                   <NotebookPen className="text-muted-foreground size-3.5 shrink-0" />
                 </TooltipTrigger>
@@ -311,7 +300,7 @@ function TransactionRow({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
-                  render={<span className="inline-flex" tabIndex={0} />}
+                  render={<button type="button" aria-label="View sender email" className="inline-flex cursor-default" />}
                 >
                   {transaction.from?.split("@")[0].slice(0, 10)}
                 </TooltipTrigger>
@@ -330,7 +319,7 @@ function TransactionRow({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
-                  render={<span className="inline-flex" tabIndex={0} />}
+                  render={<button type="button" aria-label="View recipient email" className="inline-flex cursor-default" />}
                 >
                   {transaction.to?.split("@")[0].slice(0, 10)}
                 </TooltipTrigger>

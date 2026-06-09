@@ -12,7 +12,7 @@ import {
   AccountOption,
   CategoryOption,
 } from "@/components/transactions/transaction-form";
-import { Transaction } from "@/components/transactions/transaction-table";
+import { Transaction } from "@/lib/types/transaction";
 import {
   AcceptTransactionFormType,
   TransactionFormType,
