@@ -83,7 +83,7 @@ export function AccountCard({ account, className }: AccountCardProps) {
         </div>
       </div>
 
-      <div className="mt-auto flex items-end justify-between px-6 pb-6">
+      <div className="mt-auto flex flex-wrap items-end justify-between gap-3 px-6 pb-6">
         <p
           className={cn(
             "text-2xl font-bold tracking-tight tabular-nums",
@@ -105,7 +105,7 @@ export function AccountCard({ account, className }: AccountCardProps) {
           >
             <Icon className={cn("size-4", config.iconColor)} />
           </div>
-          <span className={cn("text-sm font-semibold", config.labelColor)}>
+          <span className={cn("text-sm font-semibold whitespace-nowrap", config.labelColor)}>
             {config.label}
           </span>
         </div>
